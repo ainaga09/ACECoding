@@ -1,7 +1,6 @@
 package com.example.ryohin.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
@@ -26,6 +25,7 @@ public class CartItem {
     @Column(nullable = false)
     private Integer quantity;
 
+    
     
 
 }
