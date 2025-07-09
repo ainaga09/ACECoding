@@ -23,7 +23,7 @@ public class Cart {
     @Column(nullable = false)
     private String session_id;
 
-     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItems> cartItems = new ArrayList<>();
 
     @Column(nullable = false)
