@@ -23,6 +23,10 @@ public class product {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItem = new ArrayList<>();
 
+    @OneToMany(mappedBy = "orderitem", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItem = new ArrayList<>();
+
+
     @Column(nullable = false)
     private String name;
 

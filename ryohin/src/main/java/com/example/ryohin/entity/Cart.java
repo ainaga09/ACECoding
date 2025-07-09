@@ -24,7 +24,7 @@ public class Cart {
     private String session_id;
 
      @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartItems> cartItems = new ArrayList<>();
+    private List<CartItem> cartItems = new ArrayList<>();
 
     @Column(nullable = false)
     private LocalDateTime created_At;
@@ -51,5 +51,3 @@ public class Cart {
 }
 
 
-aaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaa
