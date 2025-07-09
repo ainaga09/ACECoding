@@ -42,7 +42,7 @@ public class Order {
     private String order_status;
     
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Orderitem> orderDetails = new ArrayList<>();
+    private List<OrderItem> orderDetails = new ArrayList<>();
     
     private LocalDateTime createdAt;
     
@@ -60,8 +60,8 @@ public class Order {
     }
     
     // Helper method to add order detail
-    public void addOrderDetail(Orderitem orderDetail) {
-        orderitem.add(orderitem);
-        orderitem.setOrder(this);
+    public void addOrderItem(OrderItem orderItem) {
+        OrderItem.add(orderItem);
+        OrderItem.setOrder(this);
     }
 }
