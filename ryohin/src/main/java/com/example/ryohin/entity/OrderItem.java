@@ -1,5 +1,5 @@
 package com.example.ryohin.entity;
 
-public class Order_Item {
+public class OrderItem {
     
 }
