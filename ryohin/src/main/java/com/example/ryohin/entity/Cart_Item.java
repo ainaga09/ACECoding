@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "cart_items")
-@Data
 @NoArgsConstructor
 
 public class Cart_Item {
@@ -18,11 +17,11 @@ public class Cart_Item {
 
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
-    private String cart_id;
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
-    private String product_id;
+    private Product product;
 
     @Column(nullable = false)
     private Integer quantity;
