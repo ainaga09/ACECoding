@@ -30,10 +30,10 @@ public class Order {
     private String guest_name;
     
     @Column(nullable = false)
-    private String guest_eIail;
+    private String guest_email;
     
     @Column(nullable = false)
-    private String shipping_free;
+    private String shipping_fee;
     
     @Column(nullable = false)
     private String guest_phone_number;
