@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer productId;
+    private Integer product_Id;
 
     @Column(nullable = false)
     private String name;
@@ -36,21 +36,21 @@ public class product {
     private String imageUrl;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime created_At;
 
     @Column(nullable = false)
-    private LocalDateTime updatedAt;
+    private LocalDateTime updated_At;
 
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
+        created_At = LocalDateTime.now();
+        updated_At = LocalDateTime.now();
     }
     
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+        updated_At = LocalDateTime.now();
     }
 
 
