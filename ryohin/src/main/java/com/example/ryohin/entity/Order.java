@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Table(name = "orders")
 @Data
 @NoArgsConstructor
-public class order {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +42,7 @@ public class order {
     private String order_status;
     
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderDetail> orderDetails = new ArrayList<>();
+    private List<Orderitem> orderDetails = new ArrayList<>();
     
     private LocalDateTime createdAt;
     
@@ -60,8 +60,8 @@ public class order {
     }
     
     // Helper method to add order detail
-    public void addOrderDetail(OrderDetail orderDetail) {
-        orderDetails.add(orderDetail);
-        orderDetail.setOrder(this);
+    public void addOrderDetail(Orderitem orderDetail) {
+        orderitem.add(orderitem);
+        orderitem.setOrder(this);
     }
 }
