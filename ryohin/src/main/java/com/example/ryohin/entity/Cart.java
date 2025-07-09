@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
  
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -20,6 +22,9 @@ public class Cart {
 
     @Column(nullable = false)
     private String session_id;
+
+     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Cart_items> cart_items = new ArrayList<>();
 
     @Column(nullable = false)
     private LocalDateTime created_At;
