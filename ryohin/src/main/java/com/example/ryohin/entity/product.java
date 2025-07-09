@@ -7,6 +7,8 @@ import java.math.BigDecimal;
  
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -17,6 +19,9 @@ public class product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer product_Id;
+
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> cartItem = new ArrayList<>();
 
     @Column(nullable = false)
     private String name;
