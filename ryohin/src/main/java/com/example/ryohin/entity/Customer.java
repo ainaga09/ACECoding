@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 })
 @Data
 @NoArgsConstructor
+
 public class Customer {
 
     @Id
@@ -51,10 +52,5 @@ public class Customer {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Order> orders;
     }
-
-
-
-
-
-    
+   
 }
