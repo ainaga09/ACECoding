@@ -7,7 +7,7 @@ package com.example.ryohin.repository;
     import org.springframework.stereotype.Repository;
 
     @Repository
-    public interface Cartrepository extends JpaRepository<Cart,Integer>{
+    public interface CartRepository extends JpaRepository<Cart,Integer>{
 
     }
     
