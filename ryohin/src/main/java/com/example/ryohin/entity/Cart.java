@@ -18,29 +18,29 @@ import java.util.List;
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int cart_Id;
+    private int cartId;
 
     @Column(nullable = false)
-    private String session_id;
+    private String sessionId;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems = new ArrayList<>();
 
     @Column(nullable = false)
-    private LocalDateTime created_At;
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private LocalDateTime updated_At;
+    private LocalDateTime updatedAt;
 
     @PrePersist
     protected void onCreate() {
-        created_At = LocalDateTime.now();
-        updated_At = LocalDateTime.now();
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
     
     @PreUpdate
     protected void onUpdate() {
-        updated_At = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
 
     public void addCartItem(CartItem cartItem){

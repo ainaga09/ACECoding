@@ -25,10 +25,10 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer customer_id;
+    private Integer customerId;
 
     @Column(nullable = false)
-    private String customer_name;
+    private String customerName;
 
     @NotBlank
     @Email
@@ -40,10 +40,10 @@ public class Customer {
     private String passwordHash;
 
     @Column(nullable = false)
-    private String shipping_address;
+    private String shippingAddress;
 
     @Column(nullable = false)
-    private String phone_number;
+    private String phoneNumber;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();

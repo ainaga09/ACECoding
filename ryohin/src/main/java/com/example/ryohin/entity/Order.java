@@ -20,35 +20,35 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer order_id;
+    private Integer orderId;
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
     
     @Column(nullable = false)
-    private LocalDateTime order_date;
+    private LocalDateTime orderDate;
     
     @Column(nullable = false)
-    private BigDecimal total_amount;
+    private BigDecimal totalAmount;
     
     @Column
-    private String guest_name;
+    private String guestName;
     
     @Column
-    private String guest_email;
+    private String guestEmail;
 
     @Column
-    private String guest_shipping_address;
+    private String guestShippingAddress;
     
     @Column(nullable = false)
-    private String shipping_fee;
+    private String shippingFee;
     
     @Column
-    private String guest_phone_number;
+    private String guestPhoneNumber;
     
     @Column(nullable = false)
-    private String order_status;
+    private String orderStatus;
     
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
