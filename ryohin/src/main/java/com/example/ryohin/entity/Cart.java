@@ -11,14 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "products")
+@Table(name = "carts")
 @Data
 @NoArgsConstructor
 
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String cart_Id;
+    private int cart_Id;
 
     @Column(nullable = false)
     private String session_id;
