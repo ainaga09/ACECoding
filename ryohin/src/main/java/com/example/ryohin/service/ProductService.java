@@ -35,8 +35,8 @@ public class ProductService {
         return new ProductListItem(
                 product.getProductId(),
                 product.getName(),
-                product.getPrice(),
-                product.getImageUrl()
+                product.getImageUrl(),
+                product.getPrice()
         );
     }
     
@@ -44,10 +44,12 @@ public class ProductService {
         return new ProductDetail(
                 product.getProductId(),
                 product.getName(),
-                product.getPrice(),
                 product.getDescription(),
-                product.getStock(),
-                product.getImageUrl()
+                product.getMaterial(),
+                product.getPrice(),
+                product.getImageUrl(),
+                product.getStockQuantity()
+                
         );
     } 
 }
