@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class loginRequest {
 
- @Email
-    @NotBlank
+ @Email(message = "正しいメールアドレスの形式で入力してください")
+    @NotBlank(message = "メールアドレスは必須です")
     private String email;
 
-    @NotBlank
-    @Size(min = 8)
+    @NotBlank(message = "パスワードは必須です")
+    @Size(min = 8, message = "パスワードは8文字以上で入力してください")
     private String password;
 }
