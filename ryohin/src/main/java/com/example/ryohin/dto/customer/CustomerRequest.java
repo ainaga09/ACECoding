@@ -8,14 +8,14 @@ import lombok.Data;
 @Data
 public class CustomerRequest {
     @NotBlank
-    private String customer_name;
+    private String customerName;
     @Email
     @NotBlank
     private String email;
     @Size(min = 8)
     private String password;
     @NotBlank
-    private String shipping_address;
+    private String shippingAddress;
     @NotBlank
-    private String phone_number;
+    private String phoneNumber;
 }
