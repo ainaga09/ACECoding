@@ -41,27 +41,27 @@ public class Product {
     private BigDecimal price;
 
     @Column(nullable = false)
-    private Integer stock_quantityInteger;
+    private Integer stock;
 
     @Column(nullable = false)
     private String imageUrl;
 
     @Column(nullable = false)
-    private LocalDateTime created_At;
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private LocalDateTime updated_At;
+    private LocalDateTime updatedAt;
 
 
     @PrePersist
     protected void onCreate() {
-        created_At = LocalDateTime.now();
-        updated_At = LocalDateTime.now();
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
     
     @PreUpdate
     protected void onUpdate() {
-        updated_At = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
 
 
