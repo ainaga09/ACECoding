@@ -16,8 +16,6 @@ public class ProductDetail {
     private String description;
     private String material;
     private BigDecimal price;
-    private Integer stock_quantity;
     private String image_url;
-    private LocalDateTime created_At;
-    private LocalDateTime updated_at;
+    private Integer stock_quantity;
 }
