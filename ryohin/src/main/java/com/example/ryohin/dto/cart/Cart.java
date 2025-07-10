@@ -1,6 +1,7 @@
 package com.example.ryohin.dto.cart;
 
 import lombok.Data;
+import com.example.ryohin.entity.CartItem;
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;
