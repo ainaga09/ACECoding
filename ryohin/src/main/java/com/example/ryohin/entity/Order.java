@@ -19,6 +19,10 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer order_id;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
     
     @Column(nullable = false)
     private LocalDateTime order_date;
@@ -26,16 +30,16 @@ public class Order {
     @Column(nullable = false)
     private BigDecimal total_amount;
     
-    @Column(nullable = false)
+    @Column
     private String guest_name;
     
-    @Column(nullable = false)
+    @Column
     private String guest_email;
     
     @Column(nullable = false)
     private String shipping_fee;
     
-    @Column(nullable = false)
+    @Column
     private String guest_phone_number;
     
     @Column(nullable = false)

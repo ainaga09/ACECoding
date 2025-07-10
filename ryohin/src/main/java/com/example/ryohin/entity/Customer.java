@@ -10,12 +10,15 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Data
 @Table(name = "Customers", indexes = {
     @Index(name = "idx_email", columnList = "email")
 })
-@Data
+
 @NoArgsConstructor
 
 public class Customer {
@@ -42,15 +45,20 @@ public class Customer {
     @Column(nullable = false)
     private String phone_number;
 
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders = new ArrayList<>();
+
     private LocalDateTime createdAt;
 
     @PrePersist
     protected void onCreate(){
         createdAt = LocalDateTime.now();
 
-    // 1対多の関連付け
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Order> orders;
+    }
+    
+    public void addOrder(Order order){
+        orders.add(order);
+        order.setCustomer(this);
     }
    
 }
