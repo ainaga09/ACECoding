@@ -9,10 +9,10 @@ import com.example.ryohin.entity.Order;
 import com.example.ryohin.entity.OrderItem;
 import com.example.ryohin.entity.Product;
 import com.example.ryohin.entity.CartItem;
-import com.example.ryohin.repository.OrderItemrepository;
-import com.example.ryohin.repository.Orderrepository;
+import com.example.ryohin.repository.OrderItemRepository;
+import com.example.ryohin.repository.OrderRepository;
 import com.example.ryohin.repository.ProductRepository;
-import com.example.ryohin.repository.CartItemrepository;
+import com.example.ryohin.repository.CartItemRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,14 +25,14 @@ import java.util.Optional;
 @Service
 public class OrderService {
 
-    private final Orderrepository orderRepository;
-    private final OrderItemrepository orderItemrepository;
+    private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemrepository;
     private final ProductRepository productRepository;
     private final CartService cartService;
 
     public OrderService(
-            Orderrepository orderRepository,
-            OrderItemrepository orderItemrepository,
+            OrderRepository orderRepository,
+            OrderItemRepository orderItemrepository,
             ProductRepository productRepository,
             CartService cartService) {
         this.orderRepository = orderRepository;
