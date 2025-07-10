@@ -1,11 +1,13 @@
 package com.example.ryohin.dto.cart;
 
 import lombok.Data;
-import com.example.ryohin.entity.CartItem;
+
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import com.example.ryohin.entity.CartItem;
 
 @Data
 public class Cart implements Serializable {
@@ -13,12 +15,12 @@ public class Cart implements Serializable {
     private int totalQuantity;
     private int totalPrice;
     
-    public void addItem(CartItem item) {
+    public void addItem(CartItemInfo item,String SessionId) {
         String itemId = String.valueOf(item.getProductId());
         
         // 既存のアイテムがあれば数量を加算
         if (items.containsKey(itemId)) {
-            CartItem existingItem = items.get(itemId);
+            CartItemInfo existingItem = items.get(itemId);
             existingItem.setQuantity(existingItem.getQuantity() + item.getQuantity());
             existingItem.setSubtotal(existingItem.getPrice() * existingItem.getQuantity());
         } else {

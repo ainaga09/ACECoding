@@ -1,6 +1,6 @@
 package com.example.ryohin.dto.product;
 
-import jakarta.websocket.Decoder.Text;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
