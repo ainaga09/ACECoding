@@ -1,5 +1,9 @@
 package com.example.ryohin.repository;
 
-public class orderrepository {
-    
+import com.example.ryohin.entity.Order;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface Orderrepository extends JpaRepository<Order, Integer> {
 }
