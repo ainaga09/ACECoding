@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductListItem {
-    private Integer product_id;
-    private String product_name;
-    private String image_url;
+    private Integer productId;
+    private String productName;
+    private String imageUrl;
     private BigDecimal price;
 }
