@@ -11,7 +11,9 @@ import java.math.BigDecimal;
 
 
 @Entity
-@Table(name = "orders")
+@Table(name = "orders", indexes = {
+    @Index(name = "idx_cus_id", columnList = "customer_id")
+})
 @Data
 @NoArgsConstructor
 public class Order {
@@ -35,6 +37,9 @@ public class Order {
     
     @Column
     private String guest_email;
+
+    @Column
+    private String guest_shipping_address;
     
     @Column(nullable = false)
     private String shipping_fee;

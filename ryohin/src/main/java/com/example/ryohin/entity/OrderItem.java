@@ -6,7 +6,10 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "order_item")
+@Table(name = "order_items", indexes = {
+    @Index(name = "idx_order_id", columnList = "order_id"),
+    @Index(name = "idx_pro_id", columnList = "product_id")
+})
 @Data
 @NoArgsConstructor
 public class OrderItem {
@@ -22,9 +25,7 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
-    
-    @Column(nullable = false)
-    private String productName;
+
 
     @Column(nullable = false)
     private int quantity;
