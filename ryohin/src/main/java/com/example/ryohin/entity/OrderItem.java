@@ -1,11 +1,13 @@
 package com.example.ryohin.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "order_item")
+@Data
 @NoArgsConstructor
 public class OrderItem {
 
@@ -15,11 +17,11 @@ public class OrderItem {
     
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
-    private Order order_id;
+    private Order order;
     
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
-    private product product;
+    private Product product;
     
     @Column(nullable = false)
     private String productName;
