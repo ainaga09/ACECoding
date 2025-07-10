@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDetail {
-    private Integer product_Id;
+    private Integer product_id;
     private String product_name;
     private String description;
     private String material;
