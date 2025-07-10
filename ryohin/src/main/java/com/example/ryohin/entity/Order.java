@@ -30,7 +30,7 @@ public class Order {
     private String guest_name;
     
     @Column(nullable = false)
-    private String guest_eIail;
+    private String guest_email;
     
     @Column(nullable = false)
     private String shipping_free;
@@ -58,9 +58,10 @@ public class Order {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
-    // Helper method to add order item
+    
+    // Helper method to add order detail
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
-        orderItem.setOrder(this);
+        orderItem.setOrder_id(this);
     }
 }
