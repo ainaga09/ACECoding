@@ -20,10 +20,10 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer product_Id;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItem = new ArrayList<>();
 
-    @OneToMany(mappedBy = "orderitem", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItem = new ArrayList<>();
 
 

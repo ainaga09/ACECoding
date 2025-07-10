@@ -23,7 +23,7 @@ public class Cart {
     @Column(nullable = false)
     private String session_id;
 
-     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems = new ArrayList<>();
 
     @Column(nullable = false)
@@ -43,7 +43,10 @@ public class Cart {
         updated_At = LocalDateTime.now();
     }
 
-
+    public void addCartItem(CartItem cartItem){
+        cartItems.add(cartItem);
+        cartItem.setCart(this);
+    }
 
 
 

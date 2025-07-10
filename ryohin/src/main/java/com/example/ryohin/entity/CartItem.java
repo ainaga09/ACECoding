@@ -1,11 +1,13 @@
 package com.example.ryohin.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
 @Entity
 @Table(name = "CartItems")
+@Data
 @NoArgsConstructor
 
 public class CartItem {
