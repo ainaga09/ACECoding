@@ -49,7 +49,7 @@ public class OrderService {
 
         // 在庫確認
         for (CartItem cartItem : cart.getItems().values()) {
-            Optional<Product> productOpt = productRepository.findById(cartItem.getProductId());
+            Optional<Product> productOpt = productRepository.findById(cartItem.getProduct_Id());
             if (productOpt.isEmpty() || productOpt.get().getStock() < cartItem.getQuantity()) {
                 throw new RuntimeException("在庫不足または商品未存在: " + cartItem.getName());
             }
@@ -68,7 +68,7 @@ public class OrderService {
 
         // 注文明細作成と在庫減算
         for (CartItem cartItem : cart.getItems().values()) {
-            Product product = productRepository.findById(cartItem.getProduct_Id()).orElseThrow(
+            Product product = productRepository.findById(cartItem.getProduct_id()).orElseThrow(
                 () -> new IllegalStateException("在庫確認後に商品が見つかりません: " + cartItem.getName())
             );
 
