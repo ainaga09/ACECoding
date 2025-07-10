@@ -41,7 +41,7 @@ public class Product {
     private BigDecimal price;
 
     @Column(nullable = false)
-    private Integer stock;
+    private Integer stockQuantity;
 
     @Column(nullable = false)
     private String imageUrl;
