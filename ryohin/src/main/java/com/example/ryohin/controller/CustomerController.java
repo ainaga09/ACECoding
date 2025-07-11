@@ -1,11 +1,9 @@
 package com.example.ryohin.controller;
 
 import com.example.ryohin.dto.customer.CustomerRequest;
-import com.example.ryohin.dto.customer.Customerresponse;
 import com.example.ryohin.service.CustomerService;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,30 +18,22 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping("/info")
-    public ResponseEntity<Customerresponse> getCustomerInfo(HttpSession session) {
-        Customerresponse customer = customerService.getMockCustomer();
+    /*@GetMapping("/info")
+    public ResponseEntity<CustomerResponse> getCustomerInfo() {
+        CustomerResponse customer = customerService.getCustomer();
         return ResponseEntity.ok(customer);
-    }
+    }*/
 
 
-    @PostMapping("/register")
-    public ResponseEntity<Customerresponse> registerCustomer(
-        @Valid @RequestBody CustomerRequest customerRequest,
-        HttpSession session) {
+    @PostMapping("/saveCustomer")
+    public ResponseEntity<Void> saveCustomer(
+        @Valid @RequestBody CustomerRequest customerRequest ) {
 
-    Customerresponse response = customerService.registerCustomer(customerRequest);
-    return ResponseEntity.ok(response);
+    customerService.saveCustomer(customerRequest);
+    return new ResponseEntity<>(HttpStatus.CREATED);
 }
 
 
 
-    @PutMapping("/update")
-    public ResponseEntity<Customerresponse> updateCustomer(
-            @Valid @RequestBody CustomerRequest customerRequest,
-            HttpSession session) {
-
-        Customerresponse updated = (Customerresponse) customerService.updateCustomerInfo(customerRequest);
-        return ResponseEntity.ok(updated);
-    }
+    
 }
