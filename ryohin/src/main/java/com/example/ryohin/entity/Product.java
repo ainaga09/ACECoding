@@ -7,16 +7,26 @@ import java.math.BigDecimal;
  
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "products")
+@Table(name = "products", indexes = {
+    @Index(name = "idx_pro_name", columnList = "name")
+})
 @Data
 @NoArgsConstructor
 
-public class product {
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer product_Id;
+    private Integer productId;
+
+  
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItem = new ArrayList<>();
+
 
     @Column(nullable = false)
     private String name;
@@ -30,27 +40,27 @@ public class product {
     private BigDecimal price;
 
     @Column(nullable = false)
-    private Integer stock_quantityInteger;
+    private Integer stockQuantity;
 
     @Column(nullable = false)
     private String imageUrl;
 
     @Column(nullable = false)
-    private LocalDateTime created_At;
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private LocalDateTime updated_At;
+    private LocalDateTime updatedAt;
 
 
     @PrePersist
     protected void onCreate() {
-        created_At = LocalDateTime.now();
-        updated_At = LocalDateTime.now();
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
     
     @PreUpdate
     protected void onUpdate() {
-        updated_At = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
 
 

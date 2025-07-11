@@ -1,0 +1,22 @@
+package com.example.ryohin.dto.cart;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+import java.io.Serializable;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+
+public class CartItemDto implements Serializable {
+
+    private String productId;
+    private String name;
+    private int price;
+    private int quantity;
+    private int subtotal;
+    // getters, setters, constructor
+}
