@@ -3,8 +3,8 @@ package com.example.ryohin.service;
 import com.example.ryohin.dto.cart.Cart;
 import com.example.ryohin.dto.cart.CartItemDto;
 import com.example.ryohin.dto.order.CustomerInfo;
-import com.example.ryohin.dto.order.Orderrequest;
-import com.example.ryohin.dto.order.orderResponse;
+import com.example.ryohin.dto.order.OrderRequest1;
+import com.example.ryohin.dto.order.OrderResponse1;
 import com.example.ryohin.entity.Order;
 import com.example.ryohin.entity.OrderItem;
 import com.example.ryohin.entity.Product;
@@ -42,7 +42,7 @@ public class OrderService {
     }
 
     @Transactional
-    public orderResponse placeOrder(Cart cart, Orderrequest orderRequest, HttpSession session) {
+    public OrderResponse1 placeOrder(Cart cart, OrderRequest1 orderRequest, HttpSession session) {
         if (cart == null || cart.getItems().isEmpty()) {
             return null;
         }
@@ -100,6 +100,6 @@ public class OrderService {
         // カートクリア
         cartService.clearCart(session);
 
-        return new orderResponse(savedOrder.getOrderId(), savedOrder.getOrderDate());
+        return new OrderResponse1(savedOrder.getOrderId(), savedOrder.getOrderDate());
     }
 }
