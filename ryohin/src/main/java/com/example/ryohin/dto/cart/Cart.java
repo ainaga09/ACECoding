@@ -7,25 +7,25 @@ import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.example.ryohin.entity.CartItem;
+
 
 @Data
 public class Cart implements Serializable {
-    private Map<String, CartItem> items = new LinkedHashMap<>();
+    private Map<String, CartItemDto> items = new LinkedHashMap<>();
     private int totalQuantity;
     private int totalPrice;
     
-    public void addItem(CartItemInfo item,String SessionId) {
+    public void addItem(CartItemDto item) {
         String itemId = String.valueOf(item.getProductId());
         
         // 既存のアイテムがあれば数量を加算
         if (items.containsKey(itemId)) {
-            CartItemInfo existingItem = items.get(itemId);
+            CartItemDto existingItem = items.get(itemId);
             existingItem.setQuantity(existingItem.getQuantity() + item.getQuantity());
             existingItem.setSubtotal(existingItem.getPrice() * existingItem.getQuantity());
         } else {
             // 新しいアイテムを追加
-            item.setId(itemId);
+            item.setProductId(itemId);
             item.setSubtotal(item.getPrice() * item.getQuantity());
             items.put(itemId, item);
         }
@@ -36,7 +36,7 @@ public class Cart implements Serializable {
     
     public void updateQuantity(String itemId, int quantity) {
         if (items.containsKey(itemId)) {
-            CartItem item = items.get(itemId);
+            CartItemDto item = items.get(itemId);
             item.setQuantity(quantity);
             item.setSubtotal(item.getPrice() * quantity);
             calculateTotals();
@@ -52,7 +52,7 @@ public class Cart implements Serializable {
         totalQuantity = 0;
         totalPrice = 0;
         
-        for (CartItem item : items.values()) {
+        for (CartItemDto item : items.values()) {
             totalQuantity += item.getQuantity();
             totalPrice += item.getSubtotal();
         }
