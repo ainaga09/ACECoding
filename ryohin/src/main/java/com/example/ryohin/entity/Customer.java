@@ -24,16 +24,15 @@ import java.util.List;
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer customerId;
-
-    @Column(nullable = false)
-    private String customerName;
-
     @NotBlank
     @Email
     @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false)
+    private String customerName;
+
+
 
     @Size(min=8)
     @Column(nullable = false)
@@ -59,6 +58,11 @@ public class Customer {
     public void addOrder(Order order){
         orders.add(order);
         order.setCustomer(this);
+    }
+
+    public Customer orElseThrow(Object object) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'orElseThrow'");
     }
    
 }
