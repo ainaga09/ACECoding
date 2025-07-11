@@ -11,38 +11,47 @@ import java.math.BigDecimal;
 
 
 @Entity
-@Table(name = "orders")
+@Table(name = "orders", indexes = {
+    @Index(name = "idx_cus_id", columnList = "customer_id")
+})
 @Data
 @NoArgsConstructor
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer order_id;
+    private Integer orderId;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
     
     @Column(nullable = false)
-    private LocalDateTime order_date;
+    private LocalDateTime orderDate;
     
     @Column(nullable = false)
-    private BigDecimal total_amount;
+    private BigDecimal totalAmount;
+    
+    @Column
+    private String guestName;
+    
+    @Column
+    private String guestEmail;
+
+    @Column
+    private String guestShippingAddress;
     
     @Column(nullable = false)
-    private String guest_name;
+    private String shippingFee;
+    
+    @Column
+    private String guestPhoneNumber;
     
     @Column(nullable = false)
-    private String guest_email;
-    
-    @Column(nullable = false)
-    private String shipping_free;
-    
-    @Column(nullable = false)
-    private String guest_phone_number;
-    
-    @Column(nullable = false)
-    private String order_status;
+    private String orderStatus;
     
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> orderDetails = new ArrayList<>();
+    private List<OrderItem> orderItems = new ArrayList<>();
     
     private LocalDateTime createdAt;
     
@@ -58,10 +67,9 @@ public class Order {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
-    
-    // Helper method to add order detail
+    // Helper method to add order item
     public void addOrderItem(OrderItem orderItem) {
-        OrderItem.add(orderItem);
-        OrderItem.setOrder(this);
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
     }
 }
