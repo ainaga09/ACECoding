@@ -44,7 +44,7 @@ public class CartController {
     
     @PutMapping("/items/{itemId}")
     public ResponseEntity<Cart> updateItem(
-            @PathVariable String itemId,
+            @PathVariable Integer itemId,
             @Valid @RequestBody CartItemQuantityDto quantityDto,
             HttpSession session) {
         Cart cart = cartService.updateItemQuantity(itemId, quantityDto.getQuantity(), session);
@@ -52,7 +52,7 @@ public class CartController {
     }
     
     @DeleteMapping("/items/{itemId}")
-    public ResponseEntity<Cart> removeItem(@PathVariable String itemId, HttpSession session) {
+    public ResponseEntity<Cart> removeItem(@PathVariable Integer itemId, HttpSession session) {
         Cart cart = cartService.removeItemFromCart(itemId, session);
         return ResponseEntity.ok(cart);
     }
