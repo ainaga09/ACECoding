@@ -11,12 +11,12 @@ import java.util.Map;
 
 @Data
 public class Cart implements Serializable {
-    private Map<String, CartItemDto> items = new LinkedHashMap<>();
+    private Map<Integer, CartItemDto> items = new LinkedHashMap<>();
     private int totalQuantity;
     private int totalPrice;
     
     public void addItem(CartItemDto item) {
-        String itemId = String.valueOf(item.getProductId());
+        Integer itemId = item.getProductId();
         
         // 既存のアイテムがあれば数量を加算
         if (items.containsKey(itemId)) {
@@ -34,7 +34,7 @@ public class Cart implements Serializable {
         calculateTotals();
     }
     
-    public void updateQuantity(String itemId, int quantity) {
+    public void updateQuantity(Integer itemId, int quantity) {
         if (items.containsKey(itemId)) {
             CartItemDto item = items.get(itemId);
             item.setQuantity(quantity);
@@ -43,7 +43,7 @@ public class Cart implements Serializable {
         }
     }
     
-    public void removeItem(String itemId) {
+    public void removeItem(Integer itemId) {
         items.remove(itemId);
         calculateTotals();
     }
