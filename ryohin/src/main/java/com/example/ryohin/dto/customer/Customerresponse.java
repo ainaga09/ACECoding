@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 public class CustomerResponse {
 
     private String customerName;
+    private String email;
+    private String passwordHash;
     private String shippingAddress;
     private String phoneNumber;
 }
