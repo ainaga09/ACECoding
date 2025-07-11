@@ -49,7 +49,7 @@ public class OrderService {
 
         // 在庫確認
         for (CartItem cartItem : cart.getItems().values()) {
-            Optional<Product> productOpt = productRepository.findById(cartItem.getProduct_Id());
+            Optional<Product> productOpt = productRepository.findById(cartItem.getProductId());
             if (productOpt.isEmpty() || productOpt.get().getStock() < cartItem.getQuantity()) {
                 throw new RuntimeException("在庫不足または商品未存在: " + cartItem.getName());
             }
@@ -58,35 +58,35 @@ public class OrderService {
         // 注文エンティティ作成
         Order order = new Order();
         CustomerInfo customerInfo = orderRequest.getCustomerInfo();
-        order.setOrder_date(LocalDateTime.now());
-        order.setTotal_amount(BigDecimal.valueOf(cart.getTotalPrice()));
-        order.setGuest_name(customerInfo.getName());
-        order.setGuest_email(customerInfo.getEmail());
-        order.setGuest_shipping_address(customerInfo.getAddress());
-        order.setGuest_phone_number(customerInfo.getPhoneNumber());
-        order.setOrder_status("PENDING");
+        order.setOrderDate(LocalDateTime.now());
+        order.setTotalAmount(BigDecimal.valueOf(cart.getTotalPrice()));
+        order.setGuestName(customerInfo.getName());
+        order.setGuestEmail(customerInfo.getEmail());
+        order.setGuestShippingAddress(customerInfo.getAddress());
+        order.setGuestPhoneNumber(customerInfo.getPhoneNumber());
+        order.setOrderStatus("PENDING");
 
         // 注文明細作成と在庫減算
         for (CartItem cartItem : cart.getItems().values()) {
-            Product product = productRepository.findById(cartItem.getProduct_id()).orElseThrow(
+            Product product = productRepository.findById(cartItem.getProduct()).orElseThrow(
                 () -> new IllegalStateException("在庫確認後に商品が見つかりません: " + cartItem.getName())
             );
 
             OrderItem orderItem = new OrderItem();
             orderItem.setProduct(product);
-            orderItem.setItem_price(product.getPrice());
+            orderItem.setItemPrice(product.getPrice());
             orderItem.setQuantity(cartItem.getQuantity());
 
             order.addOrderItem(orderItem);
 
             // 在庫減算処理と結果のチェック
-            int updatedRows = productRepository.decreaseStock(product.getProduct_Id(), cartItem.getQuantity());
+            int updatedRows = productRepository.decreaseStock(product.getProductId(), cartItem.getQuantity());
 
             // 更新された行数が1でない場合（在庫更新に失敗した場合）
             if (updatedRows != 1) {
                 throw new IllegalStateException(
                     "在庫の更新に失敗しました (更新行数: " + updatedRows + ")。" +
-                    "商品ID: " + product.getProduct_Id() +
+                    "商品ID: " + product.getProductId() +
                     ", 商品名: " + product.getName() +
                     ", 要求数量: " + cartItem.getQuantity()
                     // 必要であれば、考えられる原因（競合など）を示すメッセージを追加
@@ -100,6 +100,6 @@ public class OrderService {
         // カートクリア
         cartService.clearCart(session);
 
-        return new orderResponse(savedOrder.getOrder_id(), savedOrder.getOrder_date());
+        return new orderResponse(savedOrder.getOrderId(), savedOrder.getOrderDate());
     }
 }
