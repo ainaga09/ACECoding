@@ -4,13 +4,14 @@ import com.example.ryohin.repository.CustomerRepository;
 import com.example.ryohin.dto.customer.CustomerRequest;
 
 import com.example.ryohin.entity.Customer;
- 
+ import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
  
  
 import java.time.LocalDateTime;
 
+@Service
 public class CustomerService {
  
     private CustomerRepository customerRepository;
