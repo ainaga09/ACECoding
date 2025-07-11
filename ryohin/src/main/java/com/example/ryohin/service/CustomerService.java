@@ -15,18 +15,21 @@ import java.time.LocalDateTime;
 public class CustomerService {
  
     private CustomerRepository customerRepository;
-    private CustomerRequest customerRequest;
+    
  
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
-        this.customerRequest = new CustomerRequest();
+        //this.customerRequest = new CustomerRequest();
     }
        
  
  
 @Transactional
-    public Customer saveCustomer(Customer customer) {
-        
+    public Customer saveCustomer(CustomerRequest customerRequest) {
+
+        Customer customer = new Customer();
+        customer.setCustomerName(customerRequest.getCustomerName());
+        customer.setEmail(customerRequest.getEmail());
 
         customer.setCustomerName(customerRequest.getCustomerName());
         customer.setEmail(customerRequest.getEmail());
