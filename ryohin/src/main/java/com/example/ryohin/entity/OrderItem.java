@@ -32,4 +32,14 @@ public class OrderItem {
 
     @Column(nullable = false)
     private BigDecimal itemPrice;
+
+    public void setItemPrice(int price) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setItemPrice'");
+    }
+
+    public void setItemPrice(BigDecimal price) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setItemPrice'");
+    }
 }
