@@ -57,7 +57,7 @@ public class OrderService {
         // 注文明細作成と在庫減算
         for (CartItemDto cartItem : cart.getItems().values()) {
             try {
-                Integer productId = Integer.parseInt(cartItem.getProductId());
+                Integer productId = Integer.valueOf(cartItem.getProductId());
                 Product product = productRepository.findById(productId).orElseThrow(
                     () -> new IllegalStateException("在庫確認後に商品が見つかりません: " + cartItem.getName())
                 );
