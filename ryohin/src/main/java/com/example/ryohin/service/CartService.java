@@ -53,14 +53,14 @@ public class CartService {
         return null;
     }
     
-    public Cart updateItemQuantity(String itemId, Integer quantity, HttpSession session) {
+    public Cart updateItemQuantity(Integer itemId, Integer quantity, HttpSession session) {
         Cart cart = getCartFromSession(session);
         cart.updateQuantity(itemId, quantity);
         session.setAttribute(CART_SESSION_KEY, cart);
         return cart;
     }
     
-    public Cart removeItemFromCart(String itemId, HttpSession session) {
+    public Cart removeItemFromCart(Integer itemId, HttpSession session) {
         Cart cart = getCartFromSession(session);
         cart.removeItem(itemId);
         session.setAttribute(CART_SESSION_KEY, cart);

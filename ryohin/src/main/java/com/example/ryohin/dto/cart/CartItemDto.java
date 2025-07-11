@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 public class CartItemDto implements Serializable {
 
-    private String productId;
+    private Integer productId;
     private String name;
     private int price;
     private int quantity;
