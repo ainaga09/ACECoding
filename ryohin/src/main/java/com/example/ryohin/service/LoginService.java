@@ -1,41 +1,26 @@
 package com.example.ryohin.service;
 
-public class LoginService {package com.example.ryohin.service;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+
 import com.example.ryohin.entity.Customer;
 import com.example.ryohin.repository.CustomerRepository;
-import com.example.ryohin.dto.CustomerResponse;
+import com.example.ryohin.dto.customer.CustomerResponse;
+
+import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class LoginService {
+	
+	private final CustomerRepository customerRepository;
+	
+	public Optional<Customer> searchCustomerByEail(String email){
+		return customerRepository.findByEmail(email);
+	}
 
-    private final CustomerRepository customerRepository;
-
-    @Autowired
-    public LoginService(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
-    }
-
-    public CustomerResponse login(String email, String password) {
-        Customer customer = customerRepository.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("メールアドレスまたはパスワードが間違っています"));
-
-        if (!customer.getPassword().equals(password)) {
-            throw new RuntimeException("メールアドレスまたはパスワードが間違っています");
-        }
-
-        return new CustomerResponse(
-            customer.getName(),
-            customer.getAddress(),
-            customer.getPhoneNumber()
-        );
-    }
-
-}
-
-
-    
 }
