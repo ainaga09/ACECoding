@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customerresponse {
+public class CustomerResponse {
 
     private String customerName;
     private String shippingAddress;
