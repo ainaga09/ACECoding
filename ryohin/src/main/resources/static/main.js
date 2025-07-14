@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const orderCompleteModal = new bootstrap.Modal(document.getElementById('orderCompleteModal'));
     
     // APIのベースURL
-    const API_BASE = '/api';
+    const API_BASE = 'http://localhost:8080/api';
     
     // 商品一覧の取得と表示
     fetchProducts();
@@ -56,9 +56,9 @@ document.addEventListener('DOMContentLoaded', function() {
             card.className = 'col';
             card.innerHTML = `
                 <div class="card product-card">
-                    <img src="${product.imageUrl || 'https://via.placeholder.com/300x200'}" class="card-img-top" alt="${product.name}">
+                    <img src="${product.imageUrl || 'https://via.placeholder.com/300x200'}" class="card-img-top" alt="${product.productName}">
                     <div class="card-body">
-                        <h5 class="card-title">${product.name}</h5>
+                        <h5 class="card-title">${product.productName}</h5>
                         <p class="card-text">¥${product.price.toLocaleString()}</p>
                         <button class="btn btn-outline-primary view-product" data-id="${product.productId}">詳細を見る</button>
                     </div>
@@ -90,21 +90,22 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 商品詳細を表示する関数
     function displayProductDetail(product) {
-        document.getElementById('productModalTitle').textContent = product.name;
+        document.getElementById('productModalTitle').textContent = product.productName;
         
         const modalBody = document.getElementById('productModalBody');
         modalBody.innerHTML = `
             <div class="row">
                 <div class="col-md-6">
-                    <img src="${product.imageUrl || 'https://via.placeholder.com/400x300'}" class="img-fluid" alt="${product.name}">
+                    <img src="${product.imageUrl || 'https://via.placeholder.com/400x300'}" class="img-fluid" alt="${product.productName}">
                 </div>
                 <div class="col-md-6">
                     <p class="fs-4">¥${product.price.toLocaleString()}</p>
                     <p>${product.description}</p>
-                    <p>在庫: ${product.stock} 個</p>
+                    <p>素材: ${product.material}</p>
+                    <p>在庫: ${product.stockQuantity} 個</p>
                     <div class="d-flex align-items-center mb-3">
                         <label for="quantity" class="me-2">数量:</label>
-                        <input type="number" id="quantity" class="form-control w-25" value="1" min="1" max="${product.stock}">
+                        <input type="number" id="quantity" class="form-control w-25" value="1" min="1" max="${product.stockQuantity}">
                     </div>
                     <button class="btn btn-primary add-to-cart" data-id="${product.productId}">カートに入れる</button>
                 </div>
@@ -205,15 +206,15 @@ document.addEventListener('DOMContentLoaded', function() {
             Object.values(cart.items).forEach(item => {
                 html += `
                     <tr>
-                        <td>${item.name}</td>
+                        <td>${item.productName}</td>
                         <td>¥${item.price.toLocaleString()}</td>
                         <td>
                             <input type="number" class="form-control form-control-sm update-quantity" 
-                                   data-id="${item.id}" value="${item.quantity}" min="1" style="width: 70px">
+                                   data-id="${item.productId}" value="${item.quantity}" min="1" style="width: 70px">
                         </td>
                         <td>¥${item.subtotal.toLocaleString()}</td>
                         <td>
-                            <button class="btn btn-sm btn-danger remove-item" data-id="${item.id}">削除</button>
+                            <button class="btn btn-sm btn-danger remove-item" data-id="${item.productId}">削除</button>
                         </td>
                     </tr>
                 `;

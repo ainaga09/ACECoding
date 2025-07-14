@@ -13,10 +13,10 @@ import java.io.Serializable;
 
 public class CartItemDto implements Serializable {
 
-    private String productId;
-    private String name;
+    private Integer productId;
+    private String productName;
     private int price;
     private int quantity;
     private int subtotal;
-    // getters, setters, constructor
+
 }

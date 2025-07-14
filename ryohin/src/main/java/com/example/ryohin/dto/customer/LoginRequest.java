@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class loginRequest {
+public class LoginRequest {
 
  @Email(message = "正しいメールアドレスの形式で入力してください")
     @NotBlank(message = "メールアドレスは必須です")

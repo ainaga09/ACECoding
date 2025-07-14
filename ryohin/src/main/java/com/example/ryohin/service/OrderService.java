@@ -3,8 +3,8 @@ package com.example.ryohin.service;
 import com.example.ryohin.dto.cart.Cart;
 import com.example.ryohin.dto.cart.CartItemDto;
 import com.example.ryohin.dto.order.CustomerInfo;
-import com.example.ryohin.dto.order.Orderrequest;
-import com.example.ryohin.dto.order.orderResponse;
+import com.example.ryohin.dto.order.OrderRequest;
+import com.example.ryohin.dto.order.OrderResponse;
 import com.example.ryohin.entity.Order;
 import com.example.ryohin.entity.OrderItem;
 import com.example.ryohin.entity.Product;
@@ -38,7 +38,7 @@ public class OrderService {
     }
 
     @Transactional
-    public orderResponse placeOrder(Cart cart, Orderrequest orderRequest, HttpSession session) {
+    public OrderResponse placeOrder(Cart cart, OrderRequest orderRequest, HttpSession session) {
         if (cart == null || cart.getItems().isEmpty()) {
             return null;
         }
@@ -47,7 +47,7 @@ public class OrderService {
         Order order = new Order();
         CustomerInfo customerInfo = orderRequest.getCustomerInfo();
         order.setOrderDate(LocalDateTime.now());
-        order.setTotalAmount(BigDecimal.valueOf(cart.getTotalPrice()));
+        order.setTotalAmount(cart.getTotalPrice());
         order.setGuestName(customerInfo.getName());
         order.setGuestEmail(customerInfo.getEmail());
         order.setGuestShippingAddress(customerInfo.getAddress());
@@ -57,13 +57,13 @@ public class OrderService {
         // 注文明細作成と在庫減算
         for (CartItemDto cartItem : cart.getItems().values()) {
             try {
-                Integer productId = Integer.parseInt(cartItem.getProductId());
+                Integer productId = Integer.valueOf(cartItem.getProductId());
                 Product product = productRepository.findById(productId).orElseThrow(
-                    () -> new IllegalStateException("在庫確認後に商品が見つかりません: " + cartItem.getName())
+                    () -> new IllegalStateException("在庫確認後に商品が見つかりません: " + cartItem.getProductName())
                 );
 
                 if (product.getStockQuantity() < cartItem.getQuantity()) {
-                    throw new RuntimeException("在庫不足: " + cartItem.getName());
+                    throw new RuntimeException("在庫不足: " + cartItem.getProductName());
                 }
 
                 OrderItem orderItem = new OrderItem();
@@ -73,7 +73,7 @@ public class OrderService {
                 order.addOrderItem(orderItem);
 
                 // 在庫を減らす
-                int updatedRows = productRepository.decreaseStock(product, cartItem.getQuantity());
+                int updatedRows = productRepository.decreaseStock(productId, cartItem.getQuantity());
 
                 if (updatedRows != 1) {
                     throw new IllegalStateException(
@@ -95,6 +95,6 @@ public class OrderService {
         // カートクリア
         cartService.clearCart(session);
 
-        return new orderResponse(savedOrder.getOrderId(), savedOrder.getOrderDate());
+        return new OrderResponse(savedOrder.getOrderId(), savedOrder.getOrderDate());
     }
 }

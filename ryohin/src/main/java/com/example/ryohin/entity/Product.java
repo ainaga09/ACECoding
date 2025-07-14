@@ -3,7 +3,7 @@ package com.example.ryohin.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.math.BigDecimal;
+
  
 
 import java.time.LocalDateTime;
@@ -37,7 +37,7 @@ public class Product {
     private String material;
 
     @Column(nullable = false)
-    private BigDecimal price;
+    private int price;
 
     @Column(nullable = false)
     private Integer stockQuantity;
@@ -62,10 +62,6 @@ public class Product {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
-
-
-
-
 
 
     

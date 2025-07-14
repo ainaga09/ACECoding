@@ -1,0 +1,72 @@
+header {
+  background-color: #5d5d5d;
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.product-card {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.product-card img{
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s; 
+}
+
+.cart-badge {
+    position: relative;
+    top: -8px;
+    right: 5px;
+}
+
+#cart-btn i {
+    color: #d3d3d3; 
+}
+
+#cart-btn {
+    color: #d3d3d3;
+    border: 1px solid #d3d3d3;
+    background-color: transparent;
+    padding: 6px 12px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+#cart-btn i {
+    color: #d3d3d3;
+    margin-right: 4px;
+}
+
+#cart-btn:hover {
+    background-color: #f0f0f0;
+    border-color: #bcbcbc;
+    color: #7d7d7d;
+}
+
+#cart-btn:hover i {
+    color: #7d7d7d;
+}
+
+/* 会員登録ボタンのスタイル（カートと合わせる） */
+#register-btn {
+  color: #d3d3d3;
+  border: 1px solid #d3d3d3;
+  background-color: transparent;
+  padding: 6px 12px;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+#register-btn:hover {
+  background-color: #f0f0f0;
+  border-color: #bcbcbc;
+  color: #7d7d7d;
+}

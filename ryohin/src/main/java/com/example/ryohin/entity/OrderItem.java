@@ -3,7 +3,6 @@ package com.example.ryohin.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.math.BigDecimal;
 
 @Entity
 @Table(name = "order_items", indexes = {
@@ -31,5 +30,11 @@ public class OrderItem {
     private int quantity;
 
     @Column(nullable = false)
-    private BigDecimal itemPrice;
+    private int itemPrice;
+
+    public void setItemPrice(int price) {
+        this.itemPrice = price;
+    }
+
+
 }
