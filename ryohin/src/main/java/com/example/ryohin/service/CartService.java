@@ -40,7 +40,7 @@ public class CartService {
             
             CartItemDto item = new CartItemDto();
             item.setProductId(product.getProductId());
-            item.setName(product.getName());
+            item.setProductName(product.getName());
             item.setPrice(product.getPrice());
             item.setQuantity(quantity);
             

@@ -10,6 +10,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderResponse {
-    private Integer order_id;
-    private LocalDateTime order_date;
+    private Integer orderId;
+    private LocalDateTime orderDate;
 }
