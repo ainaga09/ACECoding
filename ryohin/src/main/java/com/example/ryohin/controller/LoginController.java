@@ -1,6 +1,6 @@
 package com.example.ryohin.controller;
 
-import com.example.ryohin.dto.LoginForm;
+import com.example.ryohin.dto.customer.LoginForm;
 import com.example.ryohin.entity.Customer;
 import com.example.ryohin.service.LoginService;
 
