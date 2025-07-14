@@ -18,5 +18,5 @@ public class CartItemDto implements Serializable {
     private int price;
     private int quantity;
     private int subtotal;
-    // getters, setters, constructor
+
 }

@@ -30,7 +30,7 @@ public class LoginController {
         Optional<Customer> customerOpt = loginService.searchCustomerByEmail(form.getEmail());
         if (customerOpt.isPresent()) {
             Customer customer = customerOpt.get();
-            if (customer.getPasswordHash().equals(form.getPassword())) { // 実際はハッシュ比較すべき
+            if (customer.getPasswordHash().equals(form.getPassword())) { 
                 return "redirect:/menu";
             }
         }

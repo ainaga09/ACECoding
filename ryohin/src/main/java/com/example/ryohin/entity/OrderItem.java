@@ -33,13 +33,8 @@ public class OrderItem {
     private int itemPrice;
 
     public void setItemPrice(int price) {
-        // TODO Auto-generated method stub
-        //throw new UnsupportedOperationException("Unimplemented method 'setItemPrice'");
         this.itemPrice = price;
     }
 
-    //public void setItemPrice(int price) {
-        // TODO Auto-generated method stub
-      //  throw new UnsupportedOperationException("Unimplemented method 'setItemPrice'");
-    //}
+
 }

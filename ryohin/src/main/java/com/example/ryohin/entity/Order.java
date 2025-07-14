@@ -66,7 +66,7 @@ public class Order {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
-    // Helper method to add order item
+
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
         orderItem.setOrder(this);

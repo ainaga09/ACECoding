@@ -18,19 +18,19 @@ public class Cart implements Serializable {
     public void addItem(CartItemDto item) {
         Integer itemId = item.getProductId();
         
-        // 既存のアイテムがあれば数量を加算
+
         if (items.containsKey(itemId)) {
             CartItemDto existingItem = items.get(itemId);
             existingItem.setQuantity(existingItem.getQuantity() + item.getQuantity());
             existingItem.setSubtotal(existingItem.getPrice() * existingItem.getQuantity());
         } else {
-            // 新しいアイテムを追加
+
             item.setProductId(itemId);
             item.setSubtotal(item.getPrice() * item.getQuantity());
             items.put(itemId, item);
         }
         
-        // 合計計算
+
         calculateTotals();
     }
     

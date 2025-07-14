@@ -28,11 +28,11 @@ public class OrderController {
     }
     
     @PostMapping
-    public ResponseEntity<OrderResponse> placeOrder( //dtoのorderのファイル名を変える必要あり
+    public ResponseEntity<OrderResponse> placeOrder(
             @Valid @RequestBody OrderRequest orderRequest,
             HttpSession session) {
         
-        Cart cart = cartService.getCartFromSession(session);//cartの所完成してから
+        Cart cart = cartService.getCartFromSession(session);
         
         if (cart == null || cart.getItems().isEmpty()) {
             return ResponseEntity.badRequest().build();
