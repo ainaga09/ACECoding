@@ -118,7 +118,7 @@
                     <!-- カート内容 -->
                 </div>
                 <div class="modal-footer">
-                      <button type="button" class="btn btn-outline-secondary" id="register-btn">
+                      <button type="button" class="btn btn-outline-secondary" id="login-btn">
                     ログイン
                 </button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">買い物を続ける</button>
@@ -161,7 +161,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                   
+                    <button type="button" class="btn btn-outline-primary" id="login-btn">ログイン</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
                     <button type="button" class="btn btn-primary" id="confirm-order-btn">注文を確定する</button>
                 </div>
@@ -169,6 +169,37 @@
         </div>
     </div>
  
+    <!-- ログインフォームモーダル -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">ログイン</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="login-form" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label for="login-email" class="form-label">メールアドレス</label>
+                <input type="email" class="form-control" id="login-email" required>
+                <div class="invalid-feedback">有効なメールアドレスを入力してください</div>
+            </div>
+            <div class="mb-3">
+                <label for="login-password" class="form-label">パスワード</label>
+                <input type="password" class="form-control" id="login-password" required>
+                <div class="invalid-feedback">パスワードを入力してください</div>
+            </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+            <button type="button" class="btn btn-primary" id="login-submit-btn">ログイン</button>
+        </div>
+        </div>
+    </div>
+    </div>
+ 
+
     <!-- 注文完了モーダル -->
     <div class="modal fade" id="orderCompleteModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
