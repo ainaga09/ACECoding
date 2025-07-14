@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
     const checkoutModal = new bootstrap.Modal(document.getElementById('checkoutModal'));
     const orderCompleteModal = new bootstrap.Modal(document.getElementById('orderCompleteModal'));
+    const registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
     
     // APIのベースURL
     const API_BASE = 'http://localhost:8080/api';
@@ -30,7 +31,12 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('confirm-order-btn').addEventListener('click', function() {
         submitOrder();
     });
-    
+
+    // 会員登録ボタンクリックイベント
+    document.getElementById('register-btn').addEventListener('click',function(){
+        registerModal.show();
+    })
+
     // 商品一覧を取得して表示する関数
     async function fetchProducts() {
         try {
