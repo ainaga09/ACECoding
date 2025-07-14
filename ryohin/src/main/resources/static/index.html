@@ -49,6 +49,44 @@
         </div>
     </div>
  
+    <!-- 新規会員登録モーダル -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registerModalTitle">新規会員登録</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+                <div class="modal-body">
+                    <form id="register-form" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">お名前</label>
+                            <input type="text" class="form-control" id="name" required>
+                            <div class="invalid-feedback">お名前を入力してください</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">メールアドレス</label>
+                            <input type="email" class="form-control" id="email" required>
+                            <div class="invalid-feedback">有効なメールアドレスを入力してください</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">住所</label>
+                            <input type="text" class="form-control" id="address" required>
+                            <div class="invalid-feedback">住所を入力してください</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">電話番号</label>
+                            <input type="tel" class="form-control" id="phone" required>
+                            <div class="invalid-feedback">電話番号を入力してください</div>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="confirm-order-btn">会員登録</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
     <!-- カートモーダル -->
     <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
