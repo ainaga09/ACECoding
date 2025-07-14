@@ -6,7 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const orderCompleteModal = new bootstrap.Modal(document.getElementById('orderCompleteModal'));
     const registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
     const registrationCompleteModal = new bootstrap.Modal(document.getElementById('registrationCompleteModal'));
-    
+    const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+
     // APIのベースURL
     const API_BASE = 'http://localhost:8080/api';
     
@@ -21,6 +22,13 @@ document.addEventListener('DOMContentLoaded', function() {
         updateCartModalContent();
         cartModal.show();
     });
+
+    // ログインボタンクリックイベント
+    document.getElementById('login-btn').addEventListener('click', function () {
+        cartModal.hide();
+        loginModal.show();
+    });
+ 
     
     // 注文手続きボタンクリックイベント
     document.getElementById('checkout-btn').addEventListener('click', function() {
