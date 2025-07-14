@@ -1,12 +1,12 @@
 header {
-  background-color: #333333;
+  background-color: #5d5d5d;
   color: #ffffff;
   font-size: 16px;
 }
 
 .product-card {
-    width: 23%;
-    height: 50%;
+    width: 100%;
+    height: 100%;
     transition: transform 0.3s;
 }
 

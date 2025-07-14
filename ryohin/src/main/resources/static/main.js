@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="card product-card">
                     <img src="${product.imageUrl || 'https://via.placeholder.com/300x200'}" class="card-img-top" alt="${product.name}">
                     <div class="card-body">
-                        <h5 class="card-title">${product.name}</h5>
+                        <h5 class="card-title">${product.productName}</h5>
                         <p class="card-text">¥${product.price.toLocaleString()}</p>
                         <button class="btn btn-outline-primary view-product" data-id="${product.productId}">詳細を見る</button>
                     </div>
@@ -101,7 +101,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="col-md-6">
                     <p class="fs-4">¥${product.price.toLocaleString()}</p>
                     <p>${product.description}</p>
-                    <p>在庫: ${product.stock} 個</p>
+                    <p>素材: ${product.material}</p>
+                    <p>在庫: ${product.stockQuantity} 個</p>
                     <div class="d-flex align-items-center mb-3">
                         <label for="quantity" class="me-2">数量:</label>
                         <input type="number" id="quantity" class="form-control w-25" value="1" min="1" max="${product.stock}">
