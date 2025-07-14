@@ -226,17 +226,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
             });
             
-            html += `
+           html += `
                     </tbody>
                     <tfoot>
                         <tr>
+                            <th colspan="3" class="text-end">商品合計:</th>
+                            <th class="text-price">¥${totalPrice.toLocaleString()}</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <th colspan="3" class="text-end">送料:</th>
+                            <th class="text-price">${shippingFee === 0 ? '無料' : `¥${shippingFee.toLocaleString()}`}</th>
+                            <th></th>
+                        </tr>
+                        <tr>
                             <th colspan="3" class="text-end">合計:</th>
-                            <th>¥${cart.totalPrice.toLocaleString()}</th>
+                            <th class="text-sum">¥${grandTotal.toLocaleString()}</th>
                             <th></th>
                         </tr>
                     </tfoot>
-                </table>
-            `;
+                `;
             
             modalBody.innerHTML = html;
             
