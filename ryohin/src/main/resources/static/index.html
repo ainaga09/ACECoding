@@ -15,6 +15,8 @@
                 <span class="fs-4">Ryohin</span>
             </a>
             <div class="text-end">
+                <button id="register-btn" class="me-2">会員登録
+                </button>
                 <button id="cart-btn" class="position-relative">
                     <i class="bi bi-cart"></i> カート
                     <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge">
@@ -23,7 +25,7 @@
                 </button>
             </div>
         </header>
-
+ 
         <div id="main-content">
             <!-- ここにコンテンツが動的に表示される -->
             <div id="products-container" class="row row-cols-1 row-cols-md-3 g-4 mb-5">
@@ -31,7 +33,7 @@
             </div>
         </div>
     </div>
-
+ 
     <!-- 商品詳細モーダル -->
     <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -46,7 +48,7 @@
             </div>
         </div>
     </div>
-
+ 
     <!-- カートモーダル -->
     <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -68,7 +70,7 @@
             </div>
         </div>
     </div>
-
+ 
     <!-- 注文フォームモーダル -->
     <div class="modal fade" id="checkoutModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -102,14 +104,14 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    
+                   
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
                     <button type="button" class="btn btn-primary" id="confirm-order-btn">注文を確定する</button>
                 </div>
             </div>
         </div>
     </div>
-
+ 
     <!-- 注文完了モーダル -->
     <div class="modal fade" id="orderCompleteModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
@@ -127,8 +129,10 @@
             </div>
         </div>
     </div>
-    
+   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
+ 
+ 
