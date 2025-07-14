@@ -232,7 +232,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     </tr>
                 `;
             });
-            
+           
+        // 合計価格と送料を計算
+        const totalPrice = cart.totalPrice;
+        const shippingFee = totalPrice >= 5000 ? 0 : 500;
+        const grandTotal = totalPrice + shippingFee;
            html += `
                     </tbody>
                     <tfoot>
