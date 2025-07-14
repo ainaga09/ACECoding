@@ -73,7 +73,7 @@ public class OrderService {
                 order.addOrderItem(orderItem);
 
                 // 在庫を減らす
-                int updatedRows = productRepository.decreaseStock(product, cartItem.getQuantity());
+                int updatedRows = productRepository.decreaseStock(productId, cartItem.getQuantity());
 
                 if (updatedRows != 1) {
                     throw new IllegalStateException(
