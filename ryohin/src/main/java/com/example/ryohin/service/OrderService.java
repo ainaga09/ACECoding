@@ -47,7 +47,7 @@ public class OrderService {
         Order order = new Order();
         CustomerInfo customerInfo = orderRequest.getCustomerInfo();
         order.setOrderDate(LocalDateTime.now());
-        order.setTotalAmount(BigDecimal.valueOf(cart.getTotalPrice()));
+        order.setTotalAmount(cart.getTotalPrice());
         order.setGuestName(customerInfo.getName());
         order.setGuestEmail(customerInfo.getEmail());
         order.setGuestShippingAddress(customerInfo.getAddress());
@@ -59,11 +59,11 @@ public class OrderService {
             try {
                 Integer productId = Integer.valueOf(cartItem.getProductId());
                 Product product = productRepository.findById(productId).orElseThrow(
-                    () -> new IllegalStateException("在庫確認後に商品が見つかりません: " + cartItem.getName())
+                    () -> new IllegalStateException("在庫確認後に商品が見つかりません: " + cartItem.getProductName())
                 );
 
                 if (product.getStockQuantity() < cartItem.getQuantity()) {
-                    throw new RuntimeException("在庫不足: " + cartItem.getName());
+                    throw new RuntimeException("在庫不足: " + cartItem.getProductName());
                 }
 
                 OrderItem orderItem = new OrderItem();

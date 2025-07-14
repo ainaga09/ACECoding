@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.math.BigDecimal;
 
 
 @Entity
@@ -23,14 +22,14 @@ public class Order {
     private Integer orderId;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
+    @JoinColumn(name = "customer_id")
     private Customer customer;
     
     @Column(nullable = false)
     private LocalDateTime orderDate;
     
     @Column(nullable = false)
-    private BigDecimal totalAmount;
+    private int totalAmount;
     
     @Column
     private String guestName;
@@ -41,7 +40,7 @@ public class Order {
     @Column
     private String guestShippingAddress;
     
-    @Column(nullable = false)
+    @Column
     private String shippingFee;
     
     @Column
