@@ -1,11 +1,18 @@
 .product-card {
-    height: 100%;
+    width: 23%;
+    height: 50%;
     transition: transform 0.3s;
 }
 
 .product-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.product-card img{
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s; 
 }
 
 .cart-badge {
