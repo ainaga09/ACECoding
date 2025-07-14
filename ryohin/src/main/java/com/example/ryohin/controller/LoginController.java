@@ -1,38 +1,40 @@
 package com.example.ryohin.controller;
 
-import com.example.ryohin.dto.customer.CustomerResponse;
-import com.example.ryohin.dto.customer.LoginRequest;
+import com.example.ryohin.dto.LoginForm;
+import com.example.ryohin.entity.Customer;
 import com.example.ryohin.service.LoginService;
+
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Controller;
-import lombok.RequiredArgsConstructor;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
 public class LoginController {
-	
-	private final LoginService service;
 
-	@GetMapping("/login")
-	public String view(Model model, LoginForm form) {
-		
-		return "login"; //login.htmlをする
-	}
-	
-	@PostMapping("/login")
-	public String login(Model model, LoginForm form) {
-		var userInfo = service.searchUserById(form.getLoginId());
-		var isCorrectUserAuth = userInfo.isPresent() 
-				&& form.getPassword().equals(userInfo.get().getPassword());
-		if(isCorrectUserAuth) {
-			return "redirect:/menu";
-		}else {
-			model.addAttribute("errorMsg","IDとPASSの組み合わせが間違っています。");
-			return "login";
-		}
-	}
+    private final LoginService loginService;
+
+    @GetMapping("/login")
+    public String showLoginForm(Model model) {
+        model.addAttribute("loginForm", new LoginForm());
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String login(@ModelAttribute("loginForm") @Valid LoginForm form, Model model) {
+        Optional<Customer> customerOpt = loginService.searchCustomerByEmail(form.getEmail());
+        if (customerOpt.isPresent()) {
+            Customer customer = customerOpt.get();
+            if (customer.getPasswordHash().equals(form.getPassword())) { // 実際はハッシュ比較すべき
+                return "redirect:/menu";
+            }
+        }
+        model.addAttribute("errorMsg", "メールアドレスかパスワードが間違っています。");
+        return "login";
+    }
 }
