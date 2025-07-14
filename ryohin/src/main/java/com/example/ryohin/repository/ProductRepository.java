@@ -12,8 +12,8 @@ import org.springframework.stereotype.Repository;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     
     @Modifying
-    @Query("UPDATE Product p SET p.stock = p.stock - ?2 WHERE p.product_Id = ?1 AND p.stock >= ?2")
-    int decreaseStock(Integer product_Id, Integer quantity);
+    @Query("UPDATE Product p SET p.stockQuantity = p.stockQuantity - ?2 WHERE p.productId = ?1 AND p.stockQuantity >= ?2")
+    int decreaseStock(Integer productId, Integer stockQuantity);
 
-    int decreaseStock(Product product, int quantity);
+    
 }
