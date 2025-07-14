@@ -1,4 +1,4 @@
-package com.example.ryohin.dto;
+package com.example.ryohin.dto.customer;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
