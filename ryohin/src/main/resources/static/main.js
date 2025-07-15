@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     
+    
     // 商品一覧を取得して表示する関数
     async function fetchProducts() {
         try {
