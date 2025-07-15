@@ -20,6 +20,12 @@ document.addEventListener('DOMContentLoaded', function() {
         updateCartModalContent();
         cartModal.show();
     });
+
+    // 会員情報自動入力
+    document.getElementById('login-submit-btn').addEventListener('click', function() {
+        autoFillMemberOrder();
+    });
+
  
     // 注文手続きボタンクリックイベント
     document.getElementById('login-btn').addEventListener('click', function() {
@@ -350,6 +356,55 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('商品の削除に失敗しました');
         }
     }
+
+    // 会員情報を自動入力する関数
+    async function autoFillMemberOrder() {
+        const form = document.getElementById('login-form');
+        
+        // フォームバリデーション
+        if (!form.checkValidity()) {
+            form.classList.add('was-validated');
+            return;
+        }
+        
+        const loginData = {
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+        };
+        
+        try {
+            const response = await fetch(`${API_BASE}/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(loginData)
+            });
+            
+            if (!response.ok) {
+                throw new Error('ログインに失敗しました');
+            }
+            
+            const user = await response.json();
+            
+            // 注文フォームに会員情報を自動入力
+            document.getElementById('name').value = user.name || '';
+            document.getElementById('address').value = user.address || '';
+            document.getElementById('phone').value = user.phoneNumber || '';
+            document.getElementById('email').value = user.email || '';
+            document.getElementById('password').value = user.password || '';
+          
+            loginModal.hide();
+            checkoutModal.show();
+
+            form.classList.remove('was-validated');
+        } catch (error) {
+            console.error('Error:', error);
+            alert('会員情報の取得に失敗しました');
+        }
+    }
+
+
    
     // 注文を確定する関数
     async function submitOrder() {
