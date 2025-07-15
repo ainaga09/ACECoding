@@ -4,7 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
     const checkoutModal = new bootstrap.Modal(document.getElementById('checkoutModal'));
     const orderCompleteModal = new bootstrap.Modal(document.getElementById('orderCompleteModal'));
-    
+    const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+    const registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
     // APIのベースURL
     const API_BASE = 'http://localhost:8080/api';
     
@@ -19,6 +20,8 @@ document.addEventListener('DOMContentLoaded', function() {
         updateCartModalContent();
         cartModal.show();
     });
+
+    
     
     // 注文手続きボタンクリックイベント
     document.getElementById('checkout-btn').addEventListener('click', function() {
@@ -30,6 +33,26 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('confirm-order-btn').addEventListener('click', function() {
         submitOrder();
     });
+
+    
+
+     // 会員登録ボタンクリックイベント
+    document.getElementById('register-btn').addEventListener('click',function(){
+        registerModal.show();
+    });
+
+    // 会員登録完了ボタンクリックイベント
+    document.getElementById('confirm-register-btn').addEventListener('click', function() {
+        saveCustomer();
+    });
+
+     // ログインボタンクリックイベント
+    document.getElementById('login-btn').addEventListener('click', function () {
+        cartModal.hide();
+        loginModal.show();
+    });
+
+   
     
     // 商品一覧を取得して表示する関数
     async function fetchProducts() {
@@ -220,17 +243,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
             });
             
+            // 合計価格と送料を計算
+        const totalPrice = cart.totalPrice;
+        const shippingFee = totalPrice >= 5000 ? 0 : 500;
+        const grandTotal = totalPrice + shippingFee;
             html += `
                     </tbody>
                     <tfoot>
                         <tr>
+                            <th colspan="3" class="text-end">商品合計:</th>
+                            <th class="text-price">¥${totalPrice.toLocaleString()}</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <th colspan="3" class="text-end">送料:</th>
+                            <th class="text-price">${shippingFee === 0 ? '無料' : `¥${shippingFee.toLocaleString()}`}</th>
+                            <th></th>
+                        </tr>
+                        <tr>
                             <th colspan="3" class="text-end">合計:</th>
-                            <th>¥${cart.totalPrice.toLocaleString()}</th>
+                            <th class="text-sum">¥${grandTotal.toLocaleString()}</th>
                             <th></th>
                         </tr>
                     </tfoot>
-                </table>
-            `;
+                `;
+ 
             
             modalBody.innerHTML = html;
             
@@ -361,4 +398,52 @@ document.addEventListener('DOMContentLoaded', function() {
             <p>お客様のメールアドレスに注文確認メールをお送りしました。</p>
         `;
     }
+
+
+
+        // 新規会員登録を行う関数
+    async function saveCustomer() {
+            const form = document.getElementById('register-form');
+        if (!form.checkValidity()) {
+            form.classList.add('was-validated');
+            return;
+        }
+ 
+        const customerData = {
+            customerRequest: {
+                name: document.getElementById('register-name').value,
+                email: document.getElementById('register-email').value,
+                address: document.getElementById('register-address').value,
+                phoneNumber: document.getElementById('register-phone').value
+            }
+        };
+        try {
+            const response = await fetch(`${API_BASE}/customers`, {
+                method: 'POST',
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(customerData)
+            });
+               
+                if (!response.ok) {
+                throw new Error('会員登録に失敗しました');
+            }
+ 
+           
+            alert('会員登録が完了しました');
+ 
+            form.reset();
+            form.classList.remove('was-validated');
+            registerModal.hide();
+        } catch (error){
+            console.error('Error:', error);
+            alert('会員登録に失敗しました');
+        }
+    }
+ 
 });
+ 
+
+
+     
