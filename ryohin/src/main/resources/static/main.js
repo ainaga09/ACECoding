@@ -63,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function() {
         loginModal.show();
     });
 
-   
     
     // 商品一覧を取得して表示する関数
     async function fetchProducts() {
