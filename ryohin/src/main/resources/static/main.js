@@ -21,6 +21,11 @@ document.addEventListener('DOMContentLoaded', function() {
         cartModal.show();
     });
 
+    // 注文手続きボタンクリックイベント
+    document.getElementById('login-btn').addEventListener('click', function() {
+        cartModal.hide();
+        loginModal.show();
+    });
     
     
     // 注文手続きボタンクリックイベント
@@ -46,9 +51,15 @@ document.addEventListener('DOMContentLoaded', function() {
         saveCustomer();
     });
 
-     // ログインボタンクリックイベント
+     // ログインボタンクリックイベント(カート) 
     document.getElementById('login-btn').addEventListener('click', function () {
         cartModal.hide();
+        loginModal.show();
+    });
+
+    // ログインボタンクリックイベント(注文) 
+    document.getElementById('login-out-btn').addEventListener('click', function () {
+        checkoutModal.hide();
         loginModal.show();
     });
 
