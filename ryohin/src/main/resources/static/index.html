@@ -25,7 +25,7 @@
                 </button>
             </div>
         </header>
-
+ 
         <div id="main-content">
             <!-- ここにコンテンツが動的に表示される -->
             <div id="products-container" class="row row-cols-1 row-cols-md-3 g-4 mb-5">
@@ -33,7 +33,7 @@
             </div>
         </div>
     </div>
-
+ 
     <!-- 商品詳細モーダル -->
     <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -48,6 +48,63 @@
             </div>
         </div>
     </div>
+ 
+    <!-- 新規会員登録モーダル -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registerModalTitle">新規会員登録</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+                    <div class="modal-body">
+                    <form id="register-form" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">お名前</label>
+                            <input type="text" class="form-control" id="name" required>
+                            <div class="invalid-feedback">お名前を入力してください</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">メールアドレス</label>
+                            <input type="email" class="form-control" id="email" required>
+                            <div class="invalid-feedback">有効なメールアドレスを入力してください</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">住所</label>
+                            <input type="text" class="form-control" id="address" required>
+                            <div class="invalid-feedback">住所を入力してください</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">電話番号</label>
+                            <input type="tel" class="form-control" id="phone" required>
+                            <div class="invalid-feedback">電話番号を入力してください</div>
+                        </div>
+                    </form>
+                    </div>
+                      <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" id="confirm-register-btn">会員登録</button>
+                      </div>
+            </div>
+        </div>
+    </div>
+
+   <!-- 登録完了モーダル -->
+  <div class="modal fade" id="registrationCompleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+           <h5 class="modal-title" id="registrationCompleteModalTitle">会員登録完了</h5>
+           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+           <p>会員登録が完了しました。</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">閉じる</button>
+          </div>
+      </div>
+    </div>
+  </div>
 
     <!-- カートモーダル -->
     <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
@@ -61,7 +118,7 @@
                     <!-- カート内容 -->
                 </div>
                 <div class="modal-footer">
-                      <button type="button" class="btn btn-outline-secondary" id="register-btn">
+                      <button type="button" class="btn btn-outline-secondary" id="login-btn">
                     ログイン
                 </button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">買い物を続ける</button>
@@ -70,7 +127,7 @@
             </div>
         </div>
     </div>
-
+ 
     <!-- 注文フォームモーダル -->
     <div class="modal fade" id="checkoutModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -104,13 +161,58 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    
+                    <button type="button" class="btn btn-outline-primary" id="login-btn">ログイン</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
                     <button type="button" class="btn btn-primary" id="confirm-order-btn">注文を確定する</button>
                 </div>
             </div>
         </div>
     </div>
+ 
+    <!-- ログインフォームモーダル -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">ログイン</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="login-form" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label for="login-email" class="form-label">メールアドレス</label>
+                <input type="email" class="form-control" id="login-email" required>
+                <div class="invalid-feedback">有効なメールアドレスを入力してください</div>
+            </div>
+            <div class="mb-3">
+                <label for="login-password" class="form-label">パスワード</label>
+                <input type="password" class="form-control" id="login-password" required>
+                <div class="invalid-feedback">パスワードを入力してください</div>
+            </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+            <button type="button" class="btn btn-primary" id="login-submit-btn">ログイン</button>
+        </div>
+        </div>
+    </div>
+    </div>
+
+     <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const loginForm = document.getElementById('login-form');
+        const loginButton = document.getElementById('login-submit-btn');
+ 
+        loginButton.addEventListener('click', function () {
+        if (!loginForm.checkValidity()) {
+            loginForm.classList.add('was-validated');
+        } else {
+            console.log("ログイン処理を実行");        }
+        });
+    });
+    </script>
+ 
 
     <!-- 注文完了モーダル -->
     <div class="modal fade" id="orderCompleteModal" tabindex="-1" aria-hidden="true">
@@ -129,107 +231,11 @@
             </div>
         </div>
     </div>
-
-
-        <!-- 新規会員登録モーダル -->
-    <div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="registerModalTitle">新規会員登録</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-                <div class="modal-body">
-                    <form id="register-form" class="needs-validation" novalidate>
-                        <div class="mb-3">
-                            <label for="name" class="form-label">お名前</label>
-                            <input type="text" class="form-control" id="register-name" required>
-                            <div class="invalid-feedback">お名前を入力してください</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">メールアドレス</label>
-                            <input type="email" class="form-control" id="register-email" required>
-                            <div class="invalid-feedback">有効なメールアドレスを入力してください</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">パスワード</label>
-                            <input type="password" class="form-control" id="register-password" required>
-                            <div class="invalid-feedback">8文字以上のパスワードを入力してください</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="address" class="form-label">住所</label>
-                            <input type="text" class="form-control" id="register-address" required>
-                            <div class="invalid-feedback">住所を入力してください</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">電話番号</label>
-                            <input type="tel" class="form-control" id="register-phone" required>
-                            <div class="invalid-feedback">電話番号を入力してください</div>
-                        </div>
-                    </form>
-                    <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="confirm-register-btn">会員登録</button>
-                    </div>
-                    </div>
-            </div>
-        </div>
-    </div>
-      
-          <!-- ログインフォームモーダル -->
-    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content"> 
-            <div class="modal-header">
-                <h5 class="modal-title">ログイン</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-                <div class="modal-body">
-                    <form id="login-form" class="needs-validation" novalidate>
-                        <div class="mb-3">
-                            <label for="login-email" class="form-label">メールアドレス</label>
-                            <input type="email" class="form-control" id="login-email" required>
-                            <div class="invalid-feedback">有効なメールアドレスを入力してください</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="login-password" class="form-label">パスワード</label>
-                            <input type="password" class="form-control" id="login-password" required>
-                            <div class="invalid-feedback">パスワードを入力してください</div>
-                        </div>
-                    </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-                        <button type="button" class="btn btn-primary" id="login-submit-btn">ログイン</button>
-                    </div>
-             </div>
-        </div>
-    </div>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const loginForm = document.getElementById('login-form');
-        const loginButton = document.getElementById('login-submit-btn');
- 
-        loginButton.addEventListener('click', function () {
-        if (!loginForm.checkValidity()) {
-            loginForm.classList.add('was-validated');
-        } else {
-            console.log("ログイン処理を実行");        }
-        });
-    });
-    </script>
- 
-
-    
-
-
-        
-
-    
- 
- 
-    
+   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
+ 
+ 
+ 
