@@ -54,6 +54,8 @@ public class OrderService {
         order.setGuestPhoneNumber(customerInfo.getPhoneNumber());
         order.setOrderStatus("PENDING");
 
+
+        
         // 注文明細作成と在庫減算
         for (CartItemDto cartItem : cart.getItems().values()) {
             try {
