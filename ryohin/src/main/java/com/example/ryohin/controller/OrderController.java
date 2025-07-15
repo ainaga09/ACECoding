@@ -1,8 +1,8 @@
 package com.example.ryohin.controller;
 
 import com.example.ryohin.dto.cart.Cart;
-import com.example.ryohin.dto.order.OrderRequest; //dtoのorderのファイル名を変える必要あり
-import com.example.ryohin.dto.order.OrderResponse; //dtoのorderのファイル名を変える必要あり
+import com.example.ryohin.dto.order.OrderRequest; 
+import com.example.ryohin.dto.order.OrderResponse; 
 import com.example.ryohin.service.CartService;
 import com.example.ryohin.service.OrderService;
 import jakarta.servlet.http.HttpSession;
