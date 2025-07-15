@@ -1,11 +1,21 @@
 header {
   background-color: #5d5d5d;
   color: #ffffff;
-  font-size: 16px;
+  font-size: 20px;
+    justify-content:space-between;
+    padding:20px 40px
 }
 
 body{
    font-family: 'Noto Sans JP', sans-serif; 
+}
+.logo-text {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    letter-spacing: 1px;
+ 
 }
 
 .product-card {
@@ -83,4 +93,21 @@ body{
   background-color: #f0f0f0;
   border-color: #bcbcbc;
   color: #7d7d7d;
+}
+.view-product {
+    background-color: #f0f0f0;  
+    color: #111;                
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+ 
+.view-product:hover {
+    background-color: #222;    
+    color: #fff;              
+    border-color: #222;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
