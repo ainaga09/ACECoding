@@ -248,7 +248,7 @@ class OrderRepositoryTest {
     void saveOrder_WithNullRequiredField_ShouldThrowException() {
         // Arrange //GuestNameはNull許容のため、他の項目に変更
         Order order = createSampleOrder("制約違反顧客");
-        order.setOrderStatus(null); // @Column(nullable = false) のカラムにnullを設定
+        order.setTotalAmount(null); // @Column(nullable = false) のカラムにnullを設定
 
         // Act & Assert
         // save() の時点では例外は発生せず、flush() のタイミングでDB制約により発生することが多い
