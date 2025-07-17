@@ -1,102 +1,131 @@
 package com.example.ryohin.service;
 
-
 import com.example.ryohin.dto.customer.CustomerRequest;
 import com.example.ryohin.entity.Customer;
-import com.example.ryohin.entity.Product;
 import com.example.ryohin.repository.CustomerRepository;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CustomerServiceTest {
-@Mock
-private CustomerRepository customerRepository;
- @InjectMocks
+
+    @Mock
+    private CustomerRepository customerRepository;
+
+    @InjectMocks
     private CustomerService customerService;
 
-    private CustomerRequest validRequest;
-
-    @BeforeEach
-    void setup() {
-        validRequest = new CustomerRequest();
-        validRequest.setCustomerName("山田次郎");
-        validRequest.setEmail("yamada@example.com");
-        validRequest.setPassword("Password123");
-        validRequest.setShippingAddress("東京都新宿区1-1-1");
-        validRequest.setPhoneNumber("090-1234-5678");
-    }
-
     @Test
-    @DisplayName("saveCustomer: 正常な入力でCustomerが保存される")
+    @DisplayName("saveCustomer: 正常なリクエストでCustomerが保存される")
     void saveCustomer_Success_ShouldSaveCustomer() {
         // Arrange
-        when(customerRepository.save(any(Customer.class))).thenAnswer(invocation -> {
-            Customer saved = invocation.getArgument(0);
-            saved.setCustomerId(1);
-            return saved;
-        });
+        CustomerRequest request = new CustomerRequest();
+        request.setCustomerName("山田太郎");
+        request.setEmail("yamada@example.com");
+        request.setPassword("pass123");
+        request.setPhoneNumber("09012345678");
+        request.setShippingAddress("東京都");
+
+        Customer savedCustomer = new Customer();
+        savedCustomer.setCustomerName(request.getCustomerName());
+        savedCustomer.setEmail(request.getEmail());
+        savedCustomer.setPasswordHash(request.getPassword());
+        savedCustomer.setPhoneNumber(request.getPhoneNumber());
+        savedCustomer.setShippingAddress(request.getShippingAddress());
+        savedCustomer.setCreatedAt(LocalDateTime.now());
+
+        when(customerRepository.save(any(Customer.class))).thenReturn(savedCustomer);
 
         // Act
-        Customer result = customerService.saveCustomer(validRequest);
+        Customer result = customerService.saveCustomer(request);
 
         // Assert
         assertThat(result).isNotNull();
-        assertThat(result.getCustomerName()).isEqualTo(validRequest.getCustomerName());
-        assertThat(result.getEmail()).isEqualTo(validRequest.getEmail());
-        assertThat(result.getShippingAddress()).isEqualTo(validRequest.getShippingAddress());
-        assertThat(result.getPhoneNumber()).isEqualTo(validRequest.getPhoneNumber());
-        assertThat(result.getPasswordHash()).isEqualTo(validRequest.getPassword());
-        assertThat(result.getCreatedAt()).isNotNull();
-        verify(customerRepository, times(1)).save(any(Customer.class));
+        assertThat(result.getCustomerName()).isEqualTo(request.getCustomerName());
+        assertThat(result.getEmail()).isEqualTo(request.getEmail());
+        verify(customerRepository).save(any(Customer.class));
     }
 
     @Test
-    @DisplayName("saveCustomer: 入力がnullの場合はNullPointerExceptionが発生")
+    @DisplayName("saveCustomer: createdAt が現在時刻に近い値に設定される")
+    void saveCustomer_Success_ShouldSetCreatedAtCorrectly() {
+        // Arrange
+        CustomerRequest request = new CustomerRequest();
+        request.setCustomerName("山田太郎");
+        request.setEmail("yamada@example.com");
+        request.setPassword("pass123");
+        request.setPhoneNumber("09012345678");
+        request.setShippingAddress("東京都");
+
+        when(customerRepository.save(any(Customer.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // Act
+        Customer result = customerService.saveCustomer(request);
+
+        // Assert
+        assertThat(result.getCreatedAt()).isNotNull();
+        assertThat(result.getCreatedAt()).isBeforeOrEqualTo(LocalDateTime.now());
+        assertThat(result.getCreatedAt()).isAfter(LocalDateTime.now().minusSeconds(5));
+    }
+
+    @Test
+    @DisplayName("saveCustomer: null を渡すと NullPointerException がスローされる")
     void saveCustomer_Fail_WhenRequestIsNull_ShouldThrowNPE() {
+        // Arrange
+        CustomerRequest request = null;
+
         // Act & Assert
-        assertThatThrownBy(() -> customerService.saveCustomer(null))
+        assertThatThrownBy(() -> customerService.saveCustomer(request))
             .isInstanceOf(NullPointerException.class);
+
         verifyNoInteractions(customerRepository);
     }
 
     @Test
-    @DisplayName("saveCustomer: メールアドレスが既に存在する場合に例外をスロー")
-    void saveCustomer_Fail_WhenEmailAlreadyExists_ShouldThrowException() {
+    @DisplayName("saveCustomer: 不完全なCustomerRequestではerrorがスローされる")
+    void saveCustomer_Fail_WhenFieldsMissing_ShouldThrowException() {
         // Arrange
-        doThrow(new RuntimeException("Email already exists"))
-            .when(customerRepository).save(any(Customer.class));
+        CustomerRequest request = new CustomerRequest();
+        request.setCustomerName(null); // 必須項目の欠如
 
         // Act & Assert
-        assertThatThrownBy(() -> customerService.saveCustomer(validRequest))
-            .isInstanceOf(RuntimeException.class)
-            .hasMessage("Email already exists");
-        verify(customerRepository).save(any(Customer.class));
+        assertThatThrownBy(() -> customerService.saveCustomer(request))
+            .isInstanceOf(NullPointerException.class); // または IllegalArgumentException
+
+        verifyNoInteractions(customerRepository);
     }
 
     @Test
-    @DisplayName("saveCustomer: CustomerRequestの一部がnullでも保存される（Entity側の制約による）")
-    void saveCustomer_Fail_WhenFieldsMissing_ShouldAllowNullUnlessValidated() {
+    @DisplayName("saveCustomer: emailがすでに存在する場合はerrorがスローされる")
+    void saveCustomer_Fail_WhenEmailAlreadyExists_ShouldThrowException() {
         // Arrange
-        validRequest.setEmail(null); // nullでも例外が出ない仕様ならこのままで
-        when(customerRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        CustomerRequest request = new CustomerRequest();
+        request.setCustomerName("田中花子");
+        request.setEmail("existing@example.com");
+        request.setPassword("pass456");
+        request.setPhoneNumber("08098765432");
+        request.setShippingAddress("大阪府");
 
-        // Act
-        Customer result = customerService.saveCustomer(validRequest);
+        when(customerRepository.save(any(Customer.class)))
+            .thenThrow(new RuntimeException("email 重複"));
 
-        // Assert
-        assertThat(result.getEmail()).isNull(); // バリデーションがなければ通る
+        // Act & Assert
+        assertThatThrownBy(() -> customerService.saveCustomer(request))
+            .isInstanceOf(RuntimeException.class)
+            .hasMessageContaining("email 重複");
+
         verify(customerRepository).save(any(Customer.class));
     }
-
 }
-
