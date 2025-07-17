@@ -37,7 +37,7 @@ public class Product {
     private String material;
 
     @Column(nullable = false)
-    private int price;
+    private Integer price;
 
     @Column(nullable = false)
     private Integer stockQuantity;
@@ -45,10 +45,10 @@ public class Product {
     @Column(nullable = false)
     private String imageUrl;
 
-    @Column(nullable = false)
+   
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
+    
     private LocalDateTime updatedAt;
 
 
