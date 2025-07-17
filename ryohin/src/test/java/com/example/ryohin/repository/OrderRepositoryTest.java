@@ -28,7 +28,7 @@ class OrderRepositoryTest {
     @Autowired
     private OrderRepository orderRepository; // テスト対象のリポジトリ
 
-    @Autowired // OrderDetailの削除確認用にインジェクト
+    @Autowired // OrderItemの削除確認用にインジェクト
     private OrderItemRepository orderItemRepository;
 
     @Autowired // テストデータ準備用にインジェクト
@@ -68,16 +68,16 @@ class OrderRepositoryTest {
         order.setGuestPhoneNumber("090-" + customerName.hashCode());
         order.setOrderStatus("PENDING"); // 初期ステータス
 
-        OrderItem item = new OrderItem();
-        item.setProduct(product1); // 事前に永続化したProductエンティティを設定
-        item.setItemPrice(product1.getPrice());
-        item.setQuantity(1);
-        order.addOrderItem(item); // Orderエンティティのヘルパーメソッドで詳細を追加
+        OrderItem item1 = new OrderItem();
+        item1.setProduct(product1); // 事前に永続化したProductエンティティを設定
+        item1.setItemPrice(product1.getPrice());
+        item1.setQuantity(1);
+        order.addOrderItem(item1); // Orderエンティティのヘルパーメソッドで詳細を追加
 
         OrderItem item2 = new OrderItem();
         item2.setProduct(product2);
         item2.setItemPrice(product2.getPrice());
-        item2.setQuantity(1);
+        item2.setQuantity(2);
         order.addOrderItem(item2);
         return order;
     }
@@ -89,10 +89,176 @@ class OrderRepositoryTest {
         Order order = createSampleOrder("顧客1");
 
         // Act
-        Order savedOrder = orderRepository.save(order); // Orderを保存 (CascadeType.ALLによりOrderDetailも保存されるはず)
+        Order savedOrder = orderRepository.save(order); // Orderを保存 (CascadeType.ALLによりOrderItemも保存されるはず)
         entityManager.flush(); // DBへ反映
         entityManager.clear(); // 永続化コンテキストキャッシュをクリアし、DBからの取得を確実にする
+
+        // Assert
+        // 保存されたOrderをDBから取得して検証
+        Order foundOrder = entityManager.find(Order.class, savedOrder.getOrderId());
+
+        assertThat(foundOrder).isNotNull(); // Orderが取得できる
+        assertThat(foundOrder.getOrderId()).isNotNull(); // IDが払い出されている
+        assertThat(foundOrder.getGuestName()).isEqualTo(order.getGuestName()); // 顧客名が正しい
+        assertThat(foundOrder.getOrderItems()).hasSize(2); // 注文詳細が2件含まれている
+        // 注文詳細の内容も確認
+        assertThat(foundOrder.getOrderItems().get(0).getQuantity()).isEqualTo(1);
+        assertThat(foundOrder.getOrderItems().get(1).getQuantity()).isEqualTo(2);
+
+        // 関連するOrderItemも正しく永続化されていることを確認 (CascadeType.ALLの検証)
+        OrderItem foundItem1 = entityManager.find(OrderItem.class, foundOrder.getOrderItems().get(0).getOrderItem());
+        assertThat(foundItem1).isNotNull();
+        assertThat(foundItem1.getOrder().getOrderId()).isEqualTo(foundOrder.getOrderId()); // Orderへの関連が設定されている
+    }
+
+    @Test
+    @DisplayName("存在するIDで注文を検索できる")
+    void findById_WhenOrderExists_ShouldReturnOrder() {
+        // Arrange
+        Order order1 = createSampleOrder("検索用顧客");
+        Order savedOrder = entityManager.persistFlushFind(order1); // persist + flush + find を一括実行
+        entityManager.clear();
+
+        // Act
+        Optional<Order> foundOrderOpt = orderRepository.findById(savedOrder.getOrderId()); // リポジトリ経由で検索
+
+        // Assert
+        assertThat(foundOrderOpt).isPresent(); // Optionalが値を持つ
+        Order foundOrder = foundOrderOpt.get();
+        assertThat(foundOrder.getOrderId()).isEqualTo(savedOrder.getOrderId());
+        assertThat(foundOrder.getGuestName()).isEqualTo(order1.getGuestName());
+        // 関連エンティティ(OrderItems)が取得できるかも確認（FetchTypeに依存するが、@DataJpaTest環境では通常取得可能）
+        assertThat(foundOrder.getOrderItems()).hasSize(2);
     }
     
+    @Test
+    @DisplayName("存在しないIDで注文を検索するとOptional.emptyが返る")
+    void findById_WhenOrderNotExists_ShouldReturnEmpty() {
+        // Arrange
+        Integer nonExistingId = 999; // 存在しないであろうID
+
+        // Act
+        Optional<Order> foundOrderOpt = orderRepository.findById(nonExistingId);
+
+        // Assert
+        assertThat(foundOrderOpt).isNotPresent(); // Optionalが空であること
+    }
+
+    @Test
+    @DisplayName("すべての注文を取得できる")
+    void findAll_ShouldReturnAllOrders() {
+        // Arrange
+        Order order1 = createSampleOrder("全件顧客1");
+        Order order2 = createSampleOrder("全件顧客2");
+        entityManager.persist(order1);
+        entityManager.persist(order2);
+        entityManager.flush();
+        entityManager.clear();
+
+        // Act
+        List<Order> orders = orderRepository.findAll(); // 全件取得
+
+        // Assert
+        assertThat(orders).hasSize(2); // 2件取得できること
+        // 顧客名などで内容を簡易的に確認
+        assertThat(orders).extracting(Order::getGuestName)
+                         .containsExactlyInAnyOrder(order1.getGuestName(), order2.getGuestName());
+    }
+
+    @Test
+    @DisplayName("注文が存在しない場合findAllは空のリストを返す")
+    void findAll_WhenNoOrders_ShouldReturnEmptyList() {
+        // Arrange (データなしの状態)
+
+        // Act
+        List<Order> orders = orderRepository.findAll();
+
+        // Assert
+        assertThat(orders).isEmpty(); // 空のリストが返ること
+    }
+
+// 注文の更新機能は定義してないから必要かわからないけど書いておきます。
+    @Test
+    @DisplayName("注文を更新できる")
+    void updateOrder_ShouldReflectChanges() {
+        // Arrange
+        Order order = createSampleOrder("更新前顧客");
+        Order savedOrder = entityManager.persistFlushFind(order);
+        Integer orderId = savedOrder.getOrderId();
+        LocalDateTime initialUpdatedAt = savedOrder.getUpdatedAt(); // 初期の更新日時
+        entityManager.detach(savedOrder); // 一度永続化コンテキストから切り離し、取得から行う状況を模倣
+
+        // Act
+        // 更新対象のOrderを取得
+        Order orderToUpdate = orderRepository.findById(orderId).orElseThrow();
+        String newStatus = "SHIPPED"; // 新しいステータス
+        String newAddress = "更新後の住所"; // 新しい住所
+        orderToUpdate.setOrderStatus(newStatus); // ステータスを変更
+        orderToUpdate.setGuestShippingAddress(newAddress); // 住所を変更
+        orderRepository.save(orderToUpdate); // 更新処理 (IDが存在するためUPDATE文が発行される)
+        entityManager.flush();
+        entityManager.clear();
+
+        // Assert
+        Order updatedOrder = entityManager.find(Order.class, orderId); // 更新後のデータをDBから取得
+        assertThat(updatedOrder).isNotNull();
+        assertThat(updatedOrder.getOrderStatus()).isEqualTo(newStatus); // ステータスが更新されている
+        assertThat(updatedOrder.getGuestShippingAddress()).isEqualTo(newAddress); // 住所が更新されている
+        assertThat(updatedOrder.getGuestName()).isEqualTo(order.getGuestName()); // 変更していない項目はそのまま
+        assertThat(updatedOrder.getUpdatedAt()).isAfter(initialUpdatedAt); // @PreUpdateによりupdatedAtが更新されているはず
+    }
+
+// 削除機能も定義はしてませんが、テストはできるので書いておきます。
+    @Test
+    @DisplayName("IDを指定して注文を削除できる (関連する詳細も削除される)")
+    void deleteById_ShouldRemoveOrderAndItems() {
+        // Arrange
+        Order order = createSampleOrder("削除対象顧客");
+        Order savedOrder = entityManager.persistFlushFind(order);
+        Integer orderId = savedOrder.getOrderId();
+        // 削除前のOrderItemのIDを取得 (削除確認用)
+        List<Integer> itemIds = savedOrder.getOrderItems().stream()
+                                           .map(OrderItem::getOrderItem)
+                                           .toList();
+        assertThat(itemIds).isNotEmpty(); // 詳細が存在することを前提とする
+        entityManager.clear();
+
+        // Act
+        // 削除前に存在することを確認
+        assertThat(orderRepository.findById(orderId)).isPresent();
+        assertThat(orderItemRepository.findById(itemIds.get(0))).isPresent();
+
+        orderRepository.deleteById(orderId); // IDで削除
+        entityManager.flush(); // DBに反映
+        entityManager.clear();
+
+        // Assert
+        // Orderが削除されたことを確認
+        assertThat(orderRepository.findById(orderId)).isNotPresent();
+        // 関連するOrderItemも削除されていることを確認 (Orderエンティティの CascadeType.ALL と orphanRemoval = true による)
+        for (Integer itemId : itemIds) {
+             assertThat(orderItemRepository.findById(itemId)).isNotPresent();
+             // entityManager.findでも確認可能
+             // assertThat(entityManager.find(OrderItem.class, orderItem)).isNull();
+        }
+    }
+
+    @Test
+    @DisplayName("必須項目nullで保存しようとするとDataIntegrityViolationExceptionが発生する")
+    void saveOrder_WithNullRequiredField_ShouldThrowException() {
+        // Arrange //GuestNameはNull許容のため、他の項目に変更
+        Order order = createSampleOrder("制約違反顧客");
+        order.setOrderStatus(null); // @Column(nullable = false) のカラムにnullを設定
+
+        // Act & Assert
+        // save() の時点では例外は発生せず、flush() のタイミングでDB制約により発生することが多い
+        assertThatThrownBy(() -> {
+            orderRepository.save(order);
+            entityManager.flush(); // DBへの反映時に制約違反が発生
+        })
+        .isInstanceOf(DataIntegrityViolationException.class) // Spring Data JPAがラップした例外
+        .hasCauseInstanceOf(PersistenceException.class); // JPAレイヤーの例外が原因
+        //.hasMessageContaining("NULL not allowed for column \"CUSTOMER_NAME\""); // DB依存のエラーメッセージ確認は脆い場合がある
+    }
 }
 
