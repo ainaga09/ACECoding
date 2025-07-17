@@ -29,7 +29,7 @@ public class Order {
     private LocalDateTime orderDate;
     
     @Column(nullable = false)
-    private int totalAmount;
+    private Integer totalAmount;
     
     @Column
     private String guestName;
