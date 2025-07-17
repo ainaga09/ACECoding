@@ -1,6 +1,7 @@
 package com.example.ryohin.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,7 +26,7 @@ public class OrderItem {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-
+    @Min(0)
     @Column(nullable = false)
     private int quantity;
 
