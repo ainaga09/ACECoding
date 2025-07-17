@@ -7,6 +7,9 @@ import com.example.ryohin.entity.Customer;
 import com.example.ryohin.entity.Product;
 
 import jakarta.persistence.PersistenceException; // JPA標準の例外
+import jakarta.validation.ConstraintViolation;
+
+import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,8 +17,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.dao.DataIntegrityViolationException; // Spring Data JPAの例外
+import org.springframework.orm.jpa.JpaSystemException;
+import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
+import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.id.IdentifierGenerationException;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,21 +66,155 @@ public class CustomerRepositoryTest {
     }
 
     @Test
-    @DisplayName("顧客を正常に保存")
-    void saveCustomer_Success() {
-        // Arrange
-        Customer newCustomer = createCustomer("顧客C", "customerC@example.com", "passwordHashC", "住所C", "222-2222-2222");
+    @DisplayName("顧客を正常に保存,createdAtの確認も")
+    void saveCutomer_created_Success() {
+    // Arrange
+    Customer newCustomer = createCustomer("顧客C", "customerC@example.com", "passwordHashC", "住所C", "222-2222-2222");
 
-        // Act
-        Customer savedCustomer = customerRepository.save(newCustomer); // リポジトリ経由で保存
-        entityManager.flush(); // DBへ反映
+    // 現在時刻の直前を取得（比較用）
+    Instant beforeSave = Instant.now();
+
+    // Act
+    Customer savedCustomer = customerRepository.save(newCustomer);
+    entityManager.flush(); 
+    entityManager.clear(); 
+
+    // DBから再取得（確認のため）
+    Optional<Customer> optionalCustomer = customerRepository.findById(savedCustomer.getEmail());
+
+    // Assert
+    assertThat(optionalCustomer).isPresent();
+
+    Customer retrievedCustomer = optionalCustomer.get();
+
+    assertThat(retrievedCustomer).isNotNull();
+    assertThat(retrievedCustomer.getCustomerName()).isNotNull();
+    assertThat(retrievedCustomer.getEmail()).isNotNull();
+    assertThat(retrievedCustomer.getPasswordHash()).isNotNull();
+    assertThat(retrievedCustomer.getShippingAddress()).isNotNull();
+    assertThat(retrievedCustomer.getPhoneNumber()).isNotNull();
+    assertThat(retrievedCustomer.getCreatedAt()).isNotNull();
+
+   
+   ZoneOffset offset = OffsetDateTime.now().getOffset();
+   Instant createdAt = retrievedCustomer.getCreatedAt().toInstant(offset);
+   Instant afterSave = Instant.now();
+
+    assertThat(createdAt).isAfterOrEqualTo(beforeSave);
+    assertThat(createdAt).isBeforeOrEqualTo(afterSave);
+
+    }
+
+
+    @Test
+    @DisplayName("必須項目(customername)がnullで保存しようとすると例外発生")
+    void saveCustomer_WithNullcustomerName_ShouldThrowException() {
+        // Arrange
         
-        // Assert
-        assertThat(savedCustomer).isNotNull();
-        assertThat(savedCustomer.getPasswordHash()).isNotNull();
-        assertThat(savedCustomer.getCustomerName()).isNotNull();
-        assertThat(savedCustomer.getEmail()).isNotNull();
-        assertThat(savedCustomer.getCreatedAt()).isNotNull(); // @PrePersist で createdAt が設定されている
+        Customer customer = new Customer();
+        customer.setCustomerName(null);
+        customer.setEmail("ddd@dddd");
+        customer.setPasswordHash("passwordHash1");
+        customer.setShippingAddress("shippingAddress1");
+        customer.setPhoneNumber("phoneNumber1");
+    
+        // Act & Assert
+        assertThatThrownBy(() -> {
+            customerRepository.save(customer);
+            entityManager.flush(); // DBへの反映時に制約違反が発生
+        })
+        .isInstanceOf(ConstraintViolationException.class) // Spring Data JPAがラップした例外
+        .hasCauseInstanceOf(JdbcSQLIntegrityConstraintViolationException.class); // JPAレイヤの例外
+
+    }
+
+    @Test
+    @DisplayName("必須項目(email)がnullで保存しようとすると例外発生")
+    void saveCustomer_WithNullemail_ShouldThrowException() {
+        // Arrange
+        
+        Customer customer = new Customer();
+        customer.setCustomerName("customerName2");
+        customer.setEmail(null);
+        customer.setPasswordHash("passwordHash2");
+        customer.setShippingAddress("shippingAddress2");
+        customer.setPhoneNumber("phoneNumber2");
+
+
+       // Act & Assert
+        assertThatThrownBy(() -> {
+            customerRepository.save(customer);
+            entityManager.flush(); // DBへの反映時に制約違反が発生
+        })
+
+          .isInstanceOf(JpaSystemException.class) // Spring Data JPAがラップした例外
+        .hasCauseInstanceOf(IdentifierGenerationException.class); // JPAレイヤの例外
+
+    }
+
+    @Test
+    @DisplayName("必須項目(passward)がnullで保存しようとすると例外発生")
+    void saveCustomer_WithNullpasswordhash_ShouldThrowException() {
+        // Arrange
+        
+        Customer customer = new Customer();
+        customer.setCustomerName("customerName2");
+        customer.setEmail("dddd@dddd");
+        customer.setPasswordHash(null);
+        customer.setShippingAddress("shippingAddress2");
+        customer.setPhoneNumber("phoneNumber2");
+    
+        // Act & Assert
+        assertThatThrownBy(() -> {
+            customerRepository.save(customer);
+            entityManager.flush(); // DBへの反映時に制約違反が発生
+        })
+        .isInstanceOf(ConstraintViolationException.class) // Spring Data JPAがラップした例外
+        .hasCauseInstanceOf(JdbcSQLIntegrityConstraintViolationException.class); // JPAレイヤの例外
+    }
+
+
+@Test
+    @DisplayName("必須項目(shippingAddress)がnullで保存しようとすると例外発生")
+    void saveCustomer_WithNullShippingAddress_ShouldThrowException() {
+        // Arrange
+        
+        Customer customer = new Customer();
+        customer.setCustomerName("customerName2");
+        customer.setEmail("dddd@dddd");
+        customer.setPasswordHash("passwordHash2");
+        customer.setShippingAddress(null);
+        customer.setPhoneNumber("phoneNumber2");
+    
+        // Act & Assert
+        assertThatThrownBy(() -> {
+            customerRepository.save(customer);
+            entityManager.flush(); // DBへの反映時に制約違反が発生
+        })
+        .isInstanceOf(ConstraintViolationException.class) // Spring Data JPAがラップした例外
+        .hasCauseInstanceOf(JdbcSQLIntegrityConstraintViolationException.class); // JPAレイヤの例外
+    }
+
+
+    @Test
+    @DisplayName("必須項目(phoneNumber)がnullで保存しようとすると例外発生")
+    void saveCustomer_WithNullPhoneNumber_ShouldThrowException() {
+        // Arrange
+        
+        Customer customer = new Customer();
+        customer.setCustomerName("customerName2");
+        customer.setEmail("dddd@dddd");
+        customer.setPasswordHash("passwordHash2");
+        customer.setShippingAddress("shippingAddress2");
+        customer.setPhoneNumber(null);
+    
+        // Act & Assert
+        assertThatThrownBy(() -> {
+            customerRepository.save(customer);
+            entityManager.flush(); // DBへの反映時に制約違反が発生
+        })
+        .isInstanceOf(ConstraintViolationException.class) // Spring Data JPAがラップした例外
+        .hasCauseInstanceOf(JdbcSQLIntegrityConstraintViolationException.class); // JPAレイヤの例外
     }
 
 
