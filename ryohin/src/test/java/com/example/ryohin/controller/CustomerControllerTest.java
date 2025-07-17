@@ -71,15 +71,31 @@ public class CustomerControllerTest {
     @DisplayName("異常系テスト:バリデーションエラー")
     class SaveCustomerValidationErrorTests{
 
+         // ヘルパーメソッド：バリデーションテストを実行し、結果を検証する
+        private void performValidationTest(CustomerRequest request, String expectedField, String expectedMessage) throws Exception {
+            mockMvc.perform(post("/api/customers/saveCustomer")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request))
+                            .accept(MediaType.APPLICATION_JSON))
+                            .andExpect(status().isBadRequest()) // 400 Bad Request を期待
+                            .andExpect(content().contentType(MediaType.APPLICATION_JSON)) // Content-Type が JSON であることを期待
+                            // JSONレスポンスのルートレベルにあるキー (expectedFieldの値そのもの) の値を検証する
+                            .andExpect(jsonPath("$['" + expectedField + "']", is(expectedMessage)));
+                            
+            verifyNoInteractions(customerService); // バリデーションエラーなのでサービスは呼ばれない
+        }
+
         @Test
         @DisplayName("CustomerRequest.customerName が空文字列の場合、400 Bad Requestとエラーメッセージを返す ")
         void SaveCustomer_WithBlankCustomerName_ShouldReturnBadRequest() throws Exception {
-            CustomerRequest invalidCustomerRequest = new CustomerRequest(); //合ってる？
+            CustomerRequest invalidCustomerRequest = new CustomerRequest(); 
             invalidCustomerRequest.setCustomerName("");//@NotBlank違反
             invalidCustomerRequest.setEmail("test@example.com"); 
             invalidCustomerRequest.setPassword("00000000");
             invalidCustomerRequest.setShippingAddress("ShppingAddress");
             invalidCustomerRequest.setPhoneNumber("0123456789");
+
+            performValidationTest(invalidCustomerRequest, "customerName", "お名前を入力してください");
 
 
         }
@@ -88,12 +104,14 @@ public class CustomerControllerTest {
         @Test
         @DisplayName("CustomerRequest.email が空文字列の場合、400 Bad Requestとエラーメッセージを返す ")
         void SaveCustomer_WithBlankEmail_ShouldReturnBadRequest() throws Exception{
-            CustomerRequest invalidCustomerRequest = new CustomerRequest(); //合ってる？
+            CustomerRequest invalidCustomerRequest = new CustomerRequest(); 
             invalidCustomerRequest.setCustomerName("Name");
             invalidCustomerRequest.setEmail(""); //@NotBlank違反
             invalidCustomerRequest.setPassword("00000000");
             invalidCustomerRequest.setShippingAddress("ShppingAddress");
             invalidCustomerRequest.setPhoneNumber("0123456789");
+
+             performValidationTest(invalidCustomerRequest, "email", "");
 
 
         }
@@ -102,14 +120,14 @@ public class CustomerControllerTest {
         @Test
         @DisplayName("CustomerRequest.email がemail形式でない場合、400 Bad Requestとエラーメッセージを返す ")
         void SaveCustomer_WithInvalidEmail_ShouldReturnBadRequest() throws Exception{
-            CustomerRequest invalidCustomerRequest = new CustomerRequest(); //合ってる？
+            CustomerRequest invalidCustomerRequest = new CustomerRequest(); 
             invalidCustomerRequest.setCustomerName("Name");
             invalidCustomerRequest.setEmail("invalid-email"); //@Email違反
             invalidCustomerRequest.setPassword("00000000");
             invalidCustomerRequest.setShippingAddress("ShppingAddress");
             invalidCustomerRequest.setPhoneNumber("0123456789");
 
-            
+            performValidationTest(invalidCustomerRequest, "email", "有効なメールアドレスを入力してください");
 
         }
 
@@ -117,26 +135,28 @@ public class CustomerControllerTest {
         @Test
         @DisplayName("CustomerRequest.password が空文字列の場合、400 Bad Requestとエラーメッセージを返す ")
         void SaveCustomer_WithBlankPassword_ShouldReturnBadRequest() throws Exception{
-            CustomerRequest invalidCustomerRequest = new CustomerRequest(); //合ってる？
+            CustomerRequest invalidCustomerRequest = new CustomerRequest(); 
             invalidCustomerRequest.setCustomerName("Name");
             invalidCustomerRequest.setEmail("test@example.com"); 
             invalidCustomerRequest.setPassword("");//@NotBlank違反
             invalidCustomerRequest.setShippingAddress("ShppingAddress");
             invalidCustomerRequest.setPhoneNumber("0123456789");
-            
 
+            performValidationTest(invalidCustomerRequest, "password", "パスワードを入力してください");   
         }
 
 
         @Test
         @DisplayName("CustomerRequest.shippingAddress が空文字列の場合、400 Bad Requestとエラーメッセージを返す ")
         void SaveCustomer_WithBlankShippingAddress_ShouldReturnBadRequest() throws Exception{
-            CustomerRequest invalidCustomerRequest = new CustomerRequest(); //合ってる？
+            CustomerRequest invalidCustomerRequest = new CustomerRequest(); 
             invalidCustomerRequest.setCustomerName("Name");
             invalidCustomerRequest.setEmail("test@example.com"); 
             invalidCustomerRequest.setPassword("00000000");
             invalidCustomerRequest.setShippingAddress("");//@NotBlank違反
             invalidCustomerRequest.setPhoneNumber("0123456789");
+
+            performValidationTest(invalidCustomerRequest, "address", "住所を入力してください");
 
         }
 
@@ -144,12 +164,14 @@ public class CustomerControllerTest {
         @Test
         @DisplayName("CustomerRequest.phoneNumber が空文字列の場合、400 Bad Requestとエラーメッセージを返す ")
         void SaveCustomer_WithBlankPhoneNumber_ShouldReturnBadRequest() throws Exception{
-            CustomerRequest invalidCustomerRequest = new CustomerRequest(); //合ってる？
+            CustomerRequest invalidCustomerRequest = new CustomerRequest(); 
             invalidCustomerRequest.setCustomerName("Name");
             invalidCustomerRequest.setEmail("test@example.com"); 
             invalidCustomerRequest.setPassword("00000000");
             invalidCustomerRequest.setShippingAddress("ShppingAddress");
             invalidCustomerRequest.setPhoneNumber("");//@NotBlank違反
+
+            performValidationTest(invalidCustomerRequest, "phoneNumber", "電話番号は必須です");
             
         }
 
