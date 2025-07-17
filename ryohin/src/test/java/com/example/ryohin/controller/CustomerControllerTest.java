@@ -1,5 +1,162 @@
 package com.example.ryohin.controller;
 
+//DTO
+import com.example.ryohin.dto.customer.CustomerRequest;
+import com.example.ryohin.dto.customer.CustomerResponse;
+import com.example.ryohin.dto.order.CustomerInfo;
+import com.example.ryohin.dto.order.OrderRequest;
+import com.example.ryohin.dto.product.ProductDetail;
+import com.example.ryohin.dto.product.ProductListItem;
+
+//Service
+import com.example.ryohin.service.CustomerService;
+import com.example.ryohin.service.ProductService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpSession;
+
+//junit
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+
+//springframework
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.Map; // Map使用のため
+
+import static org.hamcrest.Matchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+
+@WebMvcTest(CustomerController.class)
 public class CustomerControllerTest {
+    @Autowired
+    private MockMvc mockMvc; // HTTPリクエストをシミュレート
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @MockitoBean// Service層のモック
+    private CustomerService customerService;
+
+    private CustomerRequest validCustomerRequest; 
+
+
+    @BeforeEach
+    void setUp() {
+        //会員登録リクエスト準備
+        validCustomerRequest = new CustomerRequest();
+        validCustomerRequest.setCustomerName("Test User");
+        validCustomerRequest.setEmail("test@example.com");
+        validCustomerRequest.setPassword("Test Password");
+        validCustomerRequest.setShippingAddress("Test ShppingAddress");
+        validCustomerRequest.setPhoneNumber("0123456789");
+
+    }
+
+    //===異常系テスト：バリデーションエラー===
+    @Nested
+    @DisplayName("異常系テスト:バリデーションエラー")
+    class SaveCustomerValidationErrorTests{
+
+        @Test
+        @DisplayName("CustomerRequest.customerName が空文字列の場合、400 Bad Requestとエラーメッセージを返す ")
+        void SaveCustomer_WithBlankCustomerName_ShouldReturnBadRequest() throws Exception {
+            CustomerRequest invalidCustomerRequest = new CustomerRequest(); //合ってる？
+            invalidCustomerRequest.setCustomerName("");//@NotBlank違反
+            invalidCustomerRequest.setEmail("test@example.com"); 
+            invalidCustomerRequest.setPassword("00000000");
+            invalidCustomerRequest.setShippingAddress("ShppingAddress");
+            invalidCustomerRequest.setPhoneNumber("0123456789");
+
+
+        }
+
+
+        @Test
+        @DisplayName("CustomerRequest.email が空文字列の場合、400 Bad Requestとエラーメッセージを返す ")
+        void SaveCustomer_WithBlankEmail_ShouldReturnBadRequest() throws Exception{
+            CustomerRequest invalidCustomerRequest = new CustomerRequest(); //合ってる？
+            invalidCustomerRequest.setCustomerName("Name");
+            invalidCustomerRequest.setEmail(""); //@NotBlank違反
+            invalidCustomerRequest.setPassword("00000000");
+            invalidCustomerRequest.setShippingAddress("ShppingAddress");
+            invalidCustomerRequest.setPhoneNumber("0123456789");
+
+
+        }
+
+
+        @Test
+        @DisplayName("CustomerRequest.email がemail形式でない場合、400 Bad Requestとエラーメッセージを返す ")
+        void SaveCustomer_WithInvalidEmail_ShouldReturnBadRequest() throws Exception{
+            CustomerRequest invalidCustomerRequest = new CustomerRequest(); //合ってる？
+            invalidCustomerRequest.setCustomerName("Name");
+            invalidCustomerRequest.setEmail("invalid-email"); //@Email違反
+            invalidCustomerRequest.setPassword("00000000");
+            invalidCustomerRequest.setShippingAddress("ShppingAddress");
+            invalidCustomerRequest.setPhoneNumber("0123456789");
+
+            
+
+        }
+
+
+        @Test
+        @DisplayName("CustomerRequest.password が空文字列の場合、400 Bad Requestとエラーメッセージを返す ")
+        void SaveCustomer_WithBlankPassword_ShouldReturnBadRequest() throws Exception{
+            CustomerRequest invalidCustomerRequest = new CustomerRequest(); //合ってる？
+            invalidCustomerRequest.setCustomerName("Name");
+            invalidCustomerRequest.setEmail("test@example.com"); 
+            invalidCustomerRequest.setPassword("");//@NotBlank違反
+            invalidCustomerRequest.setShippingAddress("ShppingAddress");
+            invalidCustomerRequest.setPhoneNumber("0123456789");
+            
+
+        }
+
+
+        @Test
+        @DisplayName("CustomerRequest.shippingAddress が空文字列の場合、400 Bad Requestとエラーメッセージを返す ")
+        void SaveCustomer_WithBlankShippingAddress_ShouldReturnBadRequest() throws Exception{
+            CustomerRequest invalidCustomerRequest = new CustomerRequest(); //合ってる？
+            invalidCustomerRequest.setCustomerName("Name");
+            invalidCustomerRequest.setEmail("test@example.com"); 
+            invalidCustomerRequest.setPassword("00000000");
+            invalidCustomerRequest.setShippingAddress("");//@NotBlank違反
+            invalidCustomerRequest.setPhoneNumber("0123456789");
+
+        }
+
+
+        @Test
+        @DisplayName("CustomerRequest.phoneNumber が空文字列の場合、400 Bad Requestとエラーメッセージを返す ")
+        void SaveCustomer_WithBlankPhoneNumber_ShouldReturnBadRequest() throws Exception{
+            CustomerRequest invalidCustomerRequest = new CustomerRequest(); //合ってる？
+            invalidCustomerRequest.setCustomerName("Name");
+            invalidCustomerRequest.setEmail("test@example.com"); 
+            invalidCustomerRequest.setPassword("00000000");
+            invalidCustomerRequest.setShippingAddress("ShppingAddress");
+            invalidCustomerRequest.setPhoneNumber("");//@NotBlank違反
+            
+        }
+
+    }
+
+
+
     
+
 }
