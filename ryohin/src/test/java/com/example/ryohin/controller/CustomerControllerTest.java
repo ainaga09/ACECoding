@@ -95,7 +95,7 @@ public class CustomerControllerTest {
             invalidCustomerRequest.setShippingAddress("ShppingAddress");
             invalidCustomerRequest.setPhoneNumber("0123456789");
 
-            performValidationTest(invalidCustomerRequest, "customerName", "お名前を入力してください");
+            performValidationTest(invalidCustomerRequest, "customerName", "お名前は必須です");
 
 
         }
@@ -111,7 +111,7 @@ public class CustomerControllerTest {
             invalidCustomerRequest.setShippingAddress("ShppingAddress");
             invalidCustomerRequest.setPhoneNumber("0123456789");
 
-             performValidationTest(invalidCustomerRequest, "email", "");
+             performValidationTest(invalidCustomerRequest, "email", "メールアドレスは必須です");
 
 
         }
@@ -138,11 +138,25 @@ public class CustomerControllerTest {
             CustomerRequest invalidCustomerRequest = new CustomerRequest(); 
             invalidCustomerRequest.setCustomerName("Name");
             invalidCustomerRequest.setEmail("test@example.com"); 
-            invalidCustomerRequest.setPassword("");//@NotBlank違反
+            invalidCustomerRequest.setPassword(null);//@NotBlank違反
             invalidCustomerRequest.setShippingAddress("ShppingAddress");
             invalidCustomerRequest.setPhoneNumber("0123456789");
 
-            performValidationTest(invalidCustomerRequest, "password", "パスワードを入力してください");   
+            performValidationTest(invalidCustomerRequest, "password", "パスワードは必須です");   
+        }
+
+
+        @Test
+        @DisplayName("CustomerRequest.password が8文字未満の場合、400 Bad Requestとエラーメッセージを返す ")
+        void SaveCustomer_WithSizePassword_ShouldReturnBadRequest() throws Exception{
+            CustomerRequest invalidCustomerRequest = new CustomerRequest(); 
+            invalidCustomerRequest.setCustomerName("Name");
+            invalidCustomerRequest.setEmail("test@example.com"); 
+            invalidCustomerRequest.setPassword("0000000");//@Size違反
+            invalidCustomerRequest.setShippingAddress("ShppingAddress");
+            invalidCustomerRequest.setPhoneNumber("0123456789");
+
+            performValidationTest(invalidCustomerRequest, "password", "パスワードは8文字以上で設定してください");   
         }
 
 
@@ -156,7 +170,7 @@ public class CustomerControllerTest {
             invalidCustomerRequest.setShippingAddress("");//@NotBlank違反
             invalidCustomerRequest.setPhoneNumber("0123456789");
 
-            performValidationTest(invalidCustomerRequest, "address", "住所を入力してください");
+            performValidationTest(invalidCustomerRequest, "shippingAddress", "住所は必須です");
 
         }
 

@@ -7,15 +7,16 @@ import lombok.Data;
 
 @Data
 public class CustomerRequest {
-    @NotBlank
+    @NotBlank(message = "お名前は必須です")
     private String customerName;
-    @Email
-    @NotBlank
+    @Email(message = "有効なメールアドレスを入力してください")
+    @NotBlank(message = "メールアドレスは必須です")
     private String email;
-    @Size(min = 8)
+    @NotBlank(message = "パスワードは必須です")
+    @Size(min = 8, message = "パスワードは8文字以上で設定してください")
     private String password;
-    @NotBlank
+    @NotBlank(message = "住所は必須です")
     private String shippingAddress;
-    @NotBlank
+    @NotBlank(message = "電話番号は必須です")
     private String phoneNumber;
 }
