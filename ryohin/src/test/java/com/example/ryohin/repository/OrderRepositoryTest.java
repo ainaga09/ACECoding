@@ -175,10 +175,9 @@ class OrderRepositoryTest {
         assertThat(orders).isEmpty(); // 空のリストが返ること
     }
 
-
-    @Test
+@Test
     @DisplayName("注文を更新できる")
-    void updateOrder_ShouldReflectChanges() {
+    void updateOrder_ShouldReflectChangedStatus() {
         // Arrange
         Order order = createSampleOrder("更新前顧客");
         Order savedOrder = entityManager.persistFlushFind(order);
@@ -190,9 +189,7 @@ class OrderRepositoryTest {
         // 更新対象のOrderを取得
         Order orderToUpdate = orderRepository.findById(orderId).orElseThrow();
         String newStatus = "SHIPPED"; // 新しいステータス
-        String newAddress = "更新後の住所"; // 新しい住所
         orderToUpdate.setOrderStatus(newStatus); // ステータスを変更
-        orderToUpdate.setGuestShippingAddress(newAddress); // 住所を変更
         orderRepository.save(orderToUpdate); // 更新処理 (IDが存在するためUPDATE文が発行される)
         entityManager.flush();
         entityManager.clear();
@@ -201,6 +198,32 @@ class OrderRepositoryTest {
         Order updatedOrder = entityManager.find(Order.class, orderId); // 更新後のデータをDBから取得
         assertThat(updatedOrder).isNotNull();
         assertThat(updatedOrder.getOrderStatus()).isEqualTo(newStatus); // ステータスが更新されている
+        assertThat(updatedOrder.getGuestName()).isEqualTo(order.getGuestName()); // 変更していない項目はそのまま
+        assertThat(updatedOrder.getUpdatedAt()).isAfter(initialUpdatedAt); // @PreUpdateによりupdatedAtが更新されているはず
+    }
+
+    @Test
+    @DisplayName("注文を更新できる")
+    void updateOrder_ShouldReflectChangedShippingAddress() {
+        // Arrange
+        Order order = createSampleOrder("更新前顧客");
+        Order savedOrder = entityManager.persistFlushFind(order);
+        Integer orderId = savedOrder.getOrderId();
+        LocalDateTime initialUpdatedAt = savedOrder.getUpdatedAt(); // 初期の更新日時
+        entityManager.detach(savedOrder); // 一度永続化コンテキストから切り離し、取得から行う状況を模倣
+
+        // Act
+        // 更新対象のOrderを取得
+        Order orderToUpdate = orderRepository.findById(orderId).orElseThrow();
+        String newAddress = "更新後の住所"; // 新しい住所
+        orderToUpdate.setGuestShippingAddress(newAddress); // 住所を変更
+        orderRepository.save(orderToUpdate); // 更新処理 (IDが存在するためUPDATE文が発行される)
+        entityManager.flush();
+        entityManager.clear();
+
+        // Assert
+        Order updatedOrder = entityManager.find(Order.class, orderId); // 更新後のデータをDBから取得
+        assertThat(updatedOrder).isNotNull();
         assertThat(updatedOrder.getGuestShippingAddress()).isEqualTo(newAddress); // 住所が更新されている
         assertThat(updatedOrder.getGuestName()).isEqualTo(order.getGuestName()); // 変更していない項目はそのまま
         assertThat(updatedOrder.getUpdatedAt()).isAfter(initialUpdatedAt); // @PreUpdateによりupdatedAtが更新されているはず
