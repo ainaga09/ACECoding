@@ -1,13 +1,6 @@
 package com.example.ryohin.repository;
  
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
- 
 import com.example.ryohin.entity.Customer;
-import com.example.ryohin.entity.Product;
- 
-import jakarta.persistence.PersistenceException; // JPA標準の例外
-import jakarta.validation.ConstraintViolation;
  
 import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,17 +9,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.dao.DataIntegrityViolationException; // Spring Data JPAの例外
 import org.springframework.orm.jpa.JpaSystemException;
-import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.id.IdentifierGenerationException;
  
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.List;
 import java.util.Optional;
  
 import static org.assertj.core.api.Assertions.assertThat;

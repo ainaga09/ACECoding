@@ -152,7 +152,6 @@ class ProductRepositoryTest {
         productToUpdate.setName(newName); // 名前を変更
         productToUpdate.setPrice(newPrice); // 価格を変更
         productToUpdate.setImageUrl(newImageUrl);
-        Product updatedProductResult = productRepository.save(productToUpdate); // 更新実行 (IDが存在するためUPDATE)
         entityManager.flush(); // DBへ反映
         entityManager.clear(); // キャッシュクリア
 
