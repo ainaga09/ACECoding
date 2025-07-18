@@ -152,12 +152,34 @@ class OrderItemRepositoryTest {
     }
 
     @Test
-    @SuppressWarnings("null")
-    void saveOrderItem_WithNullOrderItem_ShouldThrowException() {
-        OrderItem nullItem = (OrderItem) null;
+    void saveOrderItem_WithNullProduct_ShouldThrowException() {
+        // Orderを事前に保存
+        Order order = new Order();
+        // 必要なフィールド設定（省略）
+        orderRepository.save(order);
 
-        assertThrows(InvalidDataAccessApiUsageException.class, () -> {
-            orderItemRepository.save(nullItem);
+        OrderItem item = new OrderItem();
+        item.setOrder(order);
+        item.setProduct(null); // ← product を null にする
+        item.setQuantity(1);
+
+        assertThrows(DataIntegrityViolationException.class, () -> {
+            orderItemRepository.saveAndFlush(item);
+        });
+    }
+
+    @Test
+    void saveOrderItem_WithNullOrder_ShouldThrowException() {
+        Product product = new Product();
+        productRepository.save(product);
+
+        OrderItem item = new OrderItem();
+        item.setOrder(null);
+        item.setProduct(product);
+        item.setQuantity(1);
+
+        assertThrows(DataIntegrityViolationException.class, () -> {
+            orderItemRepository.saveAndFlush(item);
         });
     }
 
