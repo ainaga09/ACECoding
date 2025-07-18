@@ -243,10 +243,46 @@ class OrderRepositoryTest {
 
     @Test
     @DisplayName("必須項目nullで保存しようとするとDataIntegrityViolationExceptionが発生する")
-    void saveOrder_WithNullRequiredField_ShouldThrowException() {
-        // Arrange //GuestNameはNull許容のため、他の項目に変更
+    void saveOrder_OrderDateWithNullRequiredField_ShouldThrowException() {
+        // Arrange 
+        Order order = createSampleOrder("制約違反顧客");
+        order.setOrderDate(null); // @Column(nullable = false) のカラムにnullを設定
+
+        // Act & Assert
+        // save() の時点では例外は発生せず、flush() のタイミングでDB制約により発生することが多い
+        assertThatThrownBy(() -> {
+            orderRepository.save(order);
+            entityManager.flush(); // DBへの反映時に制約違反が発生
+        })
+        .isInstanceOf(DataIntegrityViolationException.class) // Spring Data JPAがラップした例外
+        .hasCauseInstanceOf(PersistenceException.class); // JPAレイヤーの例外が原因
+        //.hasMessageContaining("NULL not allowed for column \"CUSTOMER_NAME\""); // DB依存のエラーメッセージ確認は脆い場合がある
+    }
+
+    @Test
+    @DisplayName("必須項目nullで保存しようとするとDataIntegrityViolationExceptionが発生する")
+    void saveOrder_TotalAmountWithNullRequiredField_ShouldThrowException() {
+        // Arrange 
         Order order = createSampleOrder("制約違反顧客");
         order.setTotalAmount(null); // @Column(nullable = false) のカラムにnullを設定
+
+        // Act & Assert
+        // save() の時点では例外は発生せず、flush() のタイミングでDB制約により発生することが多い
+        assertThatThrownBy(() -> {
+            orderRepository.save(order);
+            entityManager.flush(); // DBへの反映時に制約違反が発生
+        })
+        .isInstanceOf(DataIntegrityViolationException.class) // Spring Data JPAがラップした例外
+        .hasCauseInstanceOf(PersistenceException.class); // JPAレイヤーの例外が原因
+        //.hasMessageContaining("NULL not allowed for column \"CUSTOMER_NAME\""); // DB依存のエラーメッセージ確認は脆い場合がある
+    }
+
+    @Test
+    @DisplayName("必須項目nullで保存しようとするとDataIntegrityViolationExceptionが発生する")
+    void saveOrder_OrderStatusWithNullRequiredField_ShouldThrowException() {
+        // Arrange 
+        Order order = createSampleOrder("制約違反顧客");
+        order.setOrderStatus(null); // @Column(nullable = false) のカラムにnullを設定
 
         // Act & Assert
         // save() の時点では例外は発生せず、flush() のタイミングでDB制約により発生することが多い
