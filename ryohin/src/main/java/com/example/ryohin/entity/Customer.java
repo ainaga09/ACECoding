@@ -55,13 +55,7 @@ public class Customer {
 
     }
     
-    public void addOrder(Order order){
-        orders.add(order);
-        order.setCustomer(this);
-    }
-
-    public Customer orElseThrow(Object object) {
-        throw new UnsupportedOperationException("Unimplemented method 'orElseThrow'");
-    }
+    
+    
    
 }
