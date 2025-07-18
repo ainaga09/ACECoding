@@ -15,14 +15,13 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
+
 
 import java.time.LocalDateTime;
-import java.util.Map; // Map使用のため
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,10 +39,10 @@ class OrderControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @MockBean
+    // @MockBean
     private OrderService orderService;
 
-    @MockBean
+    // @MockBean
     private CartService cartService;
 
     private MockHttpSession mockSession;
