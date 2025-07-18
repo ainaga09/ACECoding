@@ -175,7 +175,7 @@ class OrderRepositoryTest {
         assertThat(orders).isEmpty(); // 空のリストが返ること
     }
 
-// 注文の更新機能は定義してないから必要かわからないけど書いておきます。
+
     @Test
     @DisplayName("注文を更新できる")
     void updateOrder_ShouldReflectChanges() {
@@ -206,7 +206,7 @@ class OrderRepositoryTest {
         assertThat(updatedOrder.getUpdatedAt()).isAfter(initialUpdatedAt); // @PreUpdateによりupdatedAtが更新されているはず
     }
 
-// 削除機能も定義はしてませんが、テストはできるので書いておきます。
+
     @Test
     @DisplayName("IDを指定して注文を削除できる (関連する詳細も削除される)")
     void deleteById_ShouldRemoveOrderAndItems() {
