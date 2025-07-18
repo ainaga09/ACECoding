@@ -23,6 +23,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 
+import org.springframework.boot.test.mock.mockito.MockBean;
+
 import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -39,10 +41,10 @@ class OrderControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    // @MockBean
+    @MockBean
     private OrderService orderService;
 
-    // @MockBean
+    @MockBean
     private CartService cartService;
 
     private MockHttpSession mockSession;
