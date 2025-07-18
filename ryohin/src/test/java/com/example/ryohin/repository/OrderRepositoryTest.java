@@ -31,8 +31,6 @@ class OrderRepositoryTest {
     @Autowired // OrderItemの削除確認用にインジェクト
     private OrderItemRepository orderItemRepository;
 
-    @Autowired // テストデータ準備用にインジェクト
-    private ProductRepository productRepository;
 
     private Product product1;
     private Product product2;

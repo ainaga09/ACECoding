@@ -3,13 +3,11 @@ package com.example.ryohin.repository;
 import com.example.ryohin.entity.Order;
 import com.example.ryohin.entity.OrderItem;
 import com.example.ryohin.entity.Product;
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,9 +26,6 @@ class OrderItemRepositoryTest {
 
     @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
-    private EntityManager entityManager;
 
     private Product product1;
     private Product product2;
