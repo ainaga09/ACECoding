@@ -37,8 +37,8 @@ class OrderItemRepositoryTest {
         product1.setPrice(1000);
         product1.setStockQuantity(10);
         product1.setImageUrl("product1");
-        product1.setDescription("説明");
-        product1.setMaterial("素材");
+        product1.setDescription("説明1");
+        product1.setMaterial("木材");
         product1.setCreatedAt(LocalDateTime.now());
         product1.setUpdatedAt(LocalDateTime.now());
         productRepository.save(product1);
@@ -48,8 +48,8 @@ class OrderItemRepositoryTest {
         product2.setPrice(2000);
         product2.setStockQuantity(5);
         product2.setImageUrl("product2");
-        product2.setDescription("説明");
-        product2.setMaterial("素材");
+        product2.setDescription("説明2");
+        product2.setMaterial("金属");
         product2.setCreatedAt(LocalDateTime.now());
         product2.setUpdatedAt(LocalDateTime.now());
         productRepository.save(product2);
