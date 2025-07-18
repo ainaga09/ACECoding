@@ -11,11 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 import java.util.Collections; // 空リスト用
-import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
@@ -28,7 +28,7 @@ class ProductControllerTest {
     @Autowired
     private MockMvc mockMvc; // HTTPリクエストをシミュレート
 
-    @MockBean // Service層のモック
+    @MockitoBean // Service層のモック
     private ProductService productService;
 
     private ProductListItem productListItem1;
