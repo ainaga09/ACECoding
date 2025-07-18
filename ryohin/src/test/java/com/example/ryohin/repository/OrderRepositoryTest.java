@@ -175,9 +175,10 @@ class OrderRepositoryTest {
         assertThat(orders).isEmpty(); // 空のリストが返ること
     }
 
-@Test
+
+    @Test
     @DisplayName("注文を更新できる")
-    void updateOrder_ShouldReflectChangedStatus() {
+    void updateOrder_ShouldReflectChanges() {
         // Arrange
         Order order = createSampleOrder("更新前顧客");
         Order savedOrder = entityManager.persistFlushFind(order);
@@ -189,33 +190,8 @@ class OrderRepositoryTest {
         // 更新対象のOrderを取得
         Order orderToUpdate = orderRepository.findById(orderId).orElseThrow();
         String newStatus = "SHIPPED"; // 新しいステータス
-        orderToUpdate.setOrderStatus(newStatus); // ステータスを変更
-        orderRepository.save(orderToUpdate); // 更新処理 (IDが存在するためUPDATE文が発行される)
-        entityManager.flush();
-        entityManager.clear();
-
-        // Assert
-        Order updatedOrder = entityManager.find(Order.class, orderId); // 更新後のデータをDBから取得
-        assertThat(updatedOrder).isNotNull();
-        assertThat(updatedOrder.getOrderStatus()).isEqualTo(newStatus); // ステータスが更新されている
-        assertThat(updatedOrder.getGuestName()).isEqualTo(order.getGuestName()); // 変更していない項目はそのまま
-        assertThat(updatedOrder.getUpdatedAt()).isAfter(initialUpdatedAt); // @PreUpdateによりupdatedAtが更新されているはず
-    }
-
-    @Test
-    @DisplayName("注文を更新できる")
-    void updateOrder_ShouldReflectChangedShippingAddress() {
-        // Arrange
-        Order order = createSampleOrder("更新前顧客");
-        Order savedOrder = entityManager.persistFlushFind(order);
-        Integer orderId = savedOrder.getOrderId();
-        LocalDateTime initialUpdatedAt = savedOrder.getUpdatedAt(); // 初期の更新日時
-        entityManager.detach(savedOrder); // 一度永続化コンテキストから切り離し、取得から行う状況を模倣
-
-        // Act
-        // 更新対象のOrderを取得
-        Order orderToUpdate = orderRepository.findById(orderId).orElseThrow();
         String newAddress = "更新後の住所"; // 新しい住所
+        orderToUpdate.setOrderStatus(newStatus); // ステータスを変更
         orderToUpdate.setGuestShippingAddress(newAddress); // 住所を変更
         orderRepository.save(orderToUpdate); // 更新処理 (IDが存在するためUPDATE文が発行される)
         entityManager.flush();
@@ -224,6 +200,7 @@ class OrderRepositoryTest {
         // Assert
         Order updatedOrder = entityManager.find(Order.class, orderId); // 更新後のデータをDBから取得
         assertThat(updatedOrder).isNotNull();
+        assertThat(updatedOrder.getOrderStatus()).isEqualTo(newStatus); // ステータスが更新されている
         assertThat(updatedOrder.getGuestShippingAddress()).isEqualTo(newAddress); // 住所が更新されている
         assertThat(updatedOrder.getGuestName()).isEqualTo(order.getGuestName()); // 変更していない項目はそのまま
         assertThat(updatedOrder.getUpdatedAt()).isAfter(initialUpdatedAt); // @PreUpdateによりupdatedAtが更新されているはず
@@ -266,10 +243,46 @@ class OrderRepositoryTest {
 
     @Test
     @DisplayName("必須項目nullで保存しようとするとDataIntegrityViolationExceptionが発生する")
-    void saveOrder_WithNullRequiredField_ShouldThrowException() {
-        // Arrange //GuestNameはNull許容のため、他の項目に変更
+    void saveOrder_OrderDateWithNullRequiredField_ShouldThrowException() {
+        // Arrange 
+        Order order = createSampleOrder("制約違反顧客");
+        order.setOrderDate(null); // @Column(nullable = false) のカラムにnullを設定
+
+        // Act & Assert
+        // save() の時点では例外は発生せず、flush() のタイミングでDB制約により発生することが多い
+        assertThatThrownBy(() -> {
+            orderRepository.save(order);
+            entityManager.flush(); // DBへの反映時に制約違反が発生
+        })
+        .isInstanceOf(DataIntegrityViolationException.class) // Spring Data JPAがラップした例外
+        .hasCauseInstanceOf(PersistenceException.class); // JPAレイヤーの例外が原因
+        //.hasMessageContaining("NULL not allowed for column \"CUSTOMER_NAME\""); // DB依存のエラーメッセージ確認は脆い場合がある
+    }
+
+    @Test
+    @DisplayName("必須項目nullで保存しようとするとDataIntegrityViolationExceptionが発生する")
+    void saveOrder_TotalAmountWithNullRequiredField_ShouldThrowException() {
+        // Arrange 
         Order order = createSampleOrder("制約違反顧客");
         order.setTotalAmount(null); // @Column(nullable = false) のカラムにnullを設定
+
+        // Act & Assert
+        // save() の時点では例外は発生せず、flush() のタイミングでDB制約により発生することが多い
+        assertThatThrownBy(() -> {
+            orderRepository.save(order);
+            entityManager.flush(); // DBへの反映時に制約違反が発生
+        })
+        .isInstanceOf(DataIntegrityViolationException.class) // Spring Data JPAがラップした例外
+        .hasCauseInstanceOf(PersistenceException.class); // JPAレイヤーの例外が原因
+        //.hasMessageContaining("NULL not allowed for column \"CUSTOMER_NAME\""); // DB依存のエラーメッセージ確認は脆い場合がある
+    }
+
+    @Test
+    @DisplayName("必須項目nullで保存しようとするとDataIntegrityViolationExceptionが発生する")
+    void saveOrder_OrderStatusWithNullRequiredField_ShouldThrowException() {
+        // Arrange 
+        Order order = createSampleOrder("制約違反顧客");
+        order.setOrderStatus(null); // @Column(nullable = false) のカラムにnullを設定
 
         // Act & Assert
         // save() の時点では例外は発生せず、flush() のタイミングでDB制約により発生することが多い
