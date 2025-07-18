@@ -3,13 +3,11 @@ package com.example.ryohin.repository;
 import com.example.ryohin.entity.Order;
 import com.example.ryohin.entity.OrderItem;
 import com.example.ryohin.entity.Product;
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,9 +27,6 @@ class OrderItemRepositoryTest {
     @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    private EntityManager entityManager;
-
     private Product product1;
     private Product product2;
 
@@ -42,8 +37,8 @@ class OrderItemRepositoryTest {
         product1.setPrice(1000);
         product1.setStockQuantity(10);
         product1.setImageUrl("product1");
-        product1.setDescription("説明");
-        product1.setMaterial("素材");
+        product1.setDescription("説明1");
+        product1.setMaterial("木材");
         product1.setCreatedAt(LocalDateTime.now());
         product1.setUpdatedAt(LocalDateTime.now());
         productRepository.save(product1);
@@ -53,8 +48,8 @@ class OrderItemRepositoryTest {
         product2.setPrice(2000);
         product2.setStockQuantity(5);
         product2.setImageUrl("product2");
-        product2.setDescription("説明");
-        product2.setMaterial("素材");
+        product2.setDescription("説明2");
+        product2.setMaterial("金属");
         product2.setCreatedAt(LocalDateTime.now());
         product2.setUpdatedAt(LocalDateTime.now());
         productRepository.save(product2);
