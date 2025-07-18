@@ -151,6 +151,15 @@ class OrderItemRepositoryTest {
         assertEquals(product.getOrderItem(), savedItem.getProduct().getOrderItem());
     }
 
+    @Test
+    @SuppressWarnings("null")
+    void saveOrderItem_WithNullOrderItem_ShouldThrowException() {
+        OrderItem nullItem = (OrderItem) null;
+
+        assertThrows(InvalidDataAccessApiUsageException.class, () -> {
+            orderItemRepository.save(nullItem);
+        });
+    }
 
 }
     
