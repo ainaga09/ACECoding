@@ -2,17 +2,10 @@ package com.example.ryohin.controller;
 
 //DTO
 import com.example.ryohin.dto.customer.CustomerRequest;
-import com.example.ryohin.dto.customer.CustomerResponse;
-import com.example.ryohin.dto.order.CustomerInfo;
-import com.example.ryohin.dto.order.OrderRequest;
-import com.example.ryohin.dto.product.ProductDetail;
-import com.example.ryohin.dto.product.ProductListItem;
 
 //Service
 import com.example.ryohin.service.CustomerService;
-import com.example.ryohin.service.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpSession;
 
 //junit
 import org.junit.jupiter.api.BeforeEach;
@@ -23,18 +16,11 @@ import org.junit.jupiter.api.Test;
 //springframework
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-
-import java.util.Map; // Map使用のため
 
 import static org.hamcrest.Matchers.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
