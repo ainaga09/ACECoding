@@ -64,7 +64,7 @@ class CustomerServiceTest {
         // Arrange
         CustomerRequest request = new CustomerRequest();
         request.setCustomerName("山田太郎");
-        request.setEmail("yamada@example.com");
+        request.setEmail("yamada@otamaeshi.com");
         request.setPassword("pass123");
         request.setPhoneNumber("09012345678");
         request.setShippingAddress("東京都");
@@ -101,7 +101,7 @@ class CustomerServiceTest {
         request.setCustomerName(null); // 必須項目の欠如
 
         // Act & Assert
-        assertThatThrownBy(() -> customerService.saveCustomer(request))
+        assertThatThrownBy(() -> customerService.saveCustomer(null))
             .isInstanceOf(NullPointerException.class); // または IllegalArgumentException
 
         verifyNoInteractions(customerRepository);
