@@ -26,6 +26,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
+
+
 @WebMvcTest(CustomerController.class)
 public class CustomerControllerTest {
     @Autowired
@@ -49,6 +51,42 @@ public class CustomerControllerTest {
         validCustomerRequest.setPassword("Test Password");
         validCustomerRequest.setShippingAddress("Test ShppingAddress");
         validCustomerRequest.setPhoneNumber("0123456789");
+
+        // --- Serviceメソッドのデフォルトモック設定 (lenient) ---
+       lenient().when(customerService.saveCustomer(validCustomerRequest)).thenReturn(null);
+
+    }
+
+/*@BeforeEach
+    void setUp() {
+        mockSession = new MockHttpSession();
+
+        // ---リクエスト準備---
+        validCustomerRequest = new CustomerRequest();
+        validCustomerRequest.setCustomerName("Test User");
+        validCustomerRequest.setEmail("test@example.com");
+        validCustomerRequest.setPassword("00000000");
+        validCustomerRequest.setShppingAddress("Test Address");
+        validCustomerRequest.setPhoneNumber("0123456789");
+        
+
+        // --- Serviceメソッドのデフォルトモック設定 (lenient) ---
+       lenient().when(customerService.saveCustomer(validCustomerRequest)).thenReturn(null);
+    }*/
+// === 正常系テスト ===
+    @Nested
+    @DisplayName("正常系: POST /api/customers/saveCustomer")
+    class SaveCustomerSuccessTest{
+    void saveCustomer_WithValidRequest_ShouldReturns201() throws Exception {
+        mockMvc.perform(post("/api/customers/saveCustomer")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(validCustomerRequest))
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isCreated()) // 201 Created
+                    .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+                    
+                
 
     }
 
