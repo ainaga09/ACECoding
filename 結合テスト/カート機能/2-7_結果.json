@@ -1,0 +1,26 @@
+HTTP/1.1 200 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 23 Jul 2025 05:03:26 GMT
+Connection: close
+
+{
+  "items": {
+    "1": {
+      "productId": 1,
+      "productName": "シンプルデスクオーガナイザー",
+      "price": 500,
+      "quantity": 2,
+      "subtotal": 1000
+    },
+    "2": {
+      "productId": 2,
+      "productName": "アロマディフューザー（ウッド）",
+      "price": 1000,
+      "quantity": 1,
+      "subtotal": 1000
+    }
+  },
+  "totalQuantity": 3,
+  "totalPrice": 2000
+}
