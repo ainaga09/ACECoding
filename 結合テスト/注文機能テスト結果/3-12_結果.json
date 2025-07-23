@@ -1,0 +1,33 @@
+前提条件
+
+HTTP/1.1 200 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 23 Jul 2025 05:10:06 GMT
+Connection: close
+
+{
+  "items": {
+    "1": {
+      "productId": 1,
+      "productName": "商品A",
+      "price": 500,
+      "quantity": 2,
+      "subtotal": 1000
+    }
+  },
+  "totalQuantity": 2,
+  "totalPrice": 1000
+}
+
+期待結果
+
+HTTP/1.1 500 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 23 Jul 2025 05:20:32 GMT
+Connection: close
+
+{
+  "message": "Required request body is missing: public org.springframework.http.ResponseEntity<com.example.ryohin.dto.order.OrderResponse> com.example.ryohin.controller.OrderController.placeOrder(com.example.ryohin.dto.order.OrderRequest,jakarta.servlet.http.HttpSession)"
+}
