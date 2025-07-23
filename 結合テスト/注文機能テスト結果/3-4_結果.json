@@ -1,0 +1,15 @@
+前提条件
+
+HTTP/1.1 400
+Content-Length: 0
+Date: Wed, 23 Jul 2025 04:35:55 GMT
+Connection: close
+
+
+結果
+
+HTTP/1.1 400 Bad Request
+Set-Cookie: JSESSIONID=AC7E3D76C32A81CEB441ECCAFB532C3F; Path=/; HttpOnly
+Content-Length: 0
+Date: Wed, 23 Jul 2025 04:38:05 GMT
+Connection: close
