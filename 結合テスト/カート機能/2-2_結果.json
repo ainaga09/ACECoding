@@ -9,11 +9,11 @@ Connection: close
     "1": {
       "productId": 1,
       "productName": "シンプルデスクオーガナイザー",
-      "price": 4200,
+      "price": 500,
       "quantity": 5,
-      "subtotal": 21000
+      "subtotal": 2500
     }
   },
   "totalQuantity": 5,
-  "totalPrice": 21000
+  "totalPrice": 2500
 }
