@@ -36,7 +36,7 @@ public class DataLoader implements CommandLineRunner {
                 "シンプルデスクオーガナイザー",
                 "机の上をすっきり整理できる木製オーガナイザー。ペン、メモ、スマートフォンなどを収納できます。",
                 "木製",
-                4200,
+                500,
                 20,
                 "/images/desk-organizer.png"
 
@@ -45,7 +45,7 @@ public class DataLoader implements CommandLineRunner {
                 "アロマディフューザー（ウッド）", 
                 "天然木を使用したシンプルなデザインのアロマディフューザー。LEDライト付き。", 
                 "木製",
-                4200,
+                1000,
                 15,                
                 "/images/aroma-diffuser.png"
 
