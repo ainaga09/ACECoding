@@ -1,0 +1,16 @@
+HTTP/1.1 200 
+Vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 23 Jul 2025 05:35:30 GMT
+Connection: close
+
+{
+  "productId": 3,
+  "productName": "商品C",
+  "description": null,
+  "material": null,
+  "price": 5800,
+  "imageUrl": "/images/cotton-blanket.png",
+  "stockQuantity": 10
+}

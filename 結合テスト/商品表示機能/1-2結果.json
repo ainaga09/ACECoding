@@ -1,0 +1,16 @@
+HTTP/1.1 200 
+Vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 23 Jul 2025 04:35:54 GMT
+Connection: close
+
+{
+  "productId": 1,
+  "productName": "シンプルデスクオーガナイザー",
+  "description": "机の上をすっきり整理できる木製オーガナイザー。ペン、メモ、スマートフォンなどを収納できます。",
+  "material": "木製",
+  "price": 4200,
+  "imageUrl": "/images/desk-organizer.png",
+  "stockQuantity": 20
+}

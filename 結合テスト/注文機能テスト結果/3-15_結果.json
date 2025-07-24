@@ -1,0 +1,2 @@
+HTTP/1.1 500 Content-Type: application/jsonTransfer-Encoding: chunkedDate: Wed, 23 Jul 2025 08:50:55 GMTConnection: close{  "error": "org.hibernate.TransientPropertyValueException: Not-null property references a transient value - transient instance must be saved before current operation: com.example.ryohin.entity.OrderItem.order -> com.example.ryohin.entity.Order"}
+ 

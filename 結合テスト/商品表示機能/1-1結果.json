@@ -1,0 +1,69 @@
+HTTP/1.1 200 
+Vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 23 Jul 2025 04:29:40 GMT
+Connection: close
+
+[
+  {
+    "productId": 1,
+    "productName": "シンプルデスクオーガナイザー",
+    "imageUrl": "/images/desk-organizer.png",
+    "price": 4200
+  },
+  {
+    "productId": 2,
+    "productName": "アロマディフューザー（ウッド）",
+    "imageUrl": "/images/aroma-diffuser.png",
+    "price": 4200
+  },
+  {
+    "productId": 3,
+    "productName": "コットンブランケット",
+    "imageUrl": "/images/cotton-blanket.png",
+    "price": 5800
+  },
+  {
+    "productId": 4,
+    "productName": "ステンレスタンブラー",
+    "imageUrl": "/images/tumbler.png",
+    "price": 2800
+  },
+  {
+    "productId": 5,
+    "productName": "ミニマルウォールクロック",
+    "imageUrl": "/images/wall-clock.png",
+    "price": 3200
+  },
+  {
+    "productId": 6,
+    "productName": "リネンクッションカバー",
+    "imageUrl": "/images/cushion-cover.png",
+    "price": 2500
+  },
+  {
+    "productId": 7,
+    "productName": "陶器フラワーベース",
+    "imageUrl": "/images/flower-vase.png",
+    "price": 4000
+  },
+  {
+    "productId": 8,
+    "productName": "木製コースター（4枚セット）",
+    "imageUrl": "/images/wooden-coaster.png",
+    "price": 1800
+  },
+  {
+    "productId": 9,
+    "productName": "キャンバストートバッグ",
+    "imageUrl": "/images/tote-bag.png",
+    "price": 3600
+  },
+  {
+    "productId": 10,
+    "productName": "ガラス保存容器セット",
+    "imageUrl": "/images/glass-container.png",
+    "price": 4500
+  }
+]

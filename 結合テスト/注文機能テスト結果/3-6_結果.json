@@ -1,0 +1,28 @@
+前提条件
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 23 Jul 2025 04:53:32 GMT
+Connection: close
+
+{
+  "items": {
+    "999": {
+      "productId": 999,
+      "productName": "商品B",
+      "price": 1000,
+      "quantity": 3,
+      "subtotal": 3000
+    }
+  },
+  "totalQuantity": 3,
+  "totalPrice": 3000
+}
+
+結果
+
+HTTP/1.1 500 Internal Server Error
+Content-Length: 0
+Date: Wed, 23 Jul 2025 04:54:27 GMT
+Connection: close
