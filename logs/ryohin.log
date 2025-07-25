@@ -1926,3 +1926,7 @@ java.lang.Exception: exception just for purpose of providing stack trace
 2025-07-25T14:14:51.655+09:00 DEBUG 20844 --- [ryohin] [HikariPool-2 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Fill pool skipped, pool has sufficient level or currently being filled.
 2025-07-25T14:15:21.656+09:00 DEBUG 20844 --- [ryohin] [HikariPool-2 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Pool stats (total=10, active=0, idle=10, waiting=0)
 2025-07-25T14:15:21.656+09:00 DEBUG 20844 --- [ryohin] [HikariPool-2 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Fill pool skipped, pool has sufficient level or currently being filled.
+2025-07-25T14:15:51.667+09:00 DEBUG 20844 --- [ryohin] [HikariPool-2 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Pool stats (total=10, active=0, idle=10, waiting=0)
+2025-07-25T14:15:51.668+09:00 DEBUG 20844 --- [ryohin] [HikariPool-2 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Fill pool skipped, pool has sufficient level or currently being filled.
+2025-07-25T14:16:21.676+09:00 DEBUG 20844 --- [ryohin] [HikariPool-2 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Pool stats (total=10, active=0, idle=10, waiting=0)
+2025-07-25T14:16:21.676+09:00 DEBUG 20844 --- [ryohin] [HikariPool-2 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Fill pool skipped, pool has sufficient level or currently being filled.
