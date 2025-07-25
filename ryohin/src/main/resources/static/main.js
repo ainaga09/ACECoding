@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
     const checkoutModal = new bootstrap.Modal(document.getElementById('checkoutModal'));
     const orderCompleteModal = new bootstrap.Modal(document.getElementById('orderCompleteModal'));
-    const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+
     const registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
     // APIのベースURL
     const API_BASE = 'http://localhost:8080/api';
@@ -21,17 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
         cartModal.show();
     });
 
-    // 会員情報自動入力
-    document.getElementById('login-submit-btn').addEventListener('click', function() {
-        autoFillMemberOrder();
-    });
 
  
-    // 注文手続きボタンクリックイベント
-    document.getElementById('login-btn').addEventListener('click', function() {
-        cartModal.hide();
-        loginModal.show();
-    });
+
    
     
     // 注文手続きボタンクリックイベント
@@ -57,18 +49,9 @@ document.addEventListener('DOMContentLoaded', function() {
         saveCustomer();
     });
 
-     // ログインボタンクリックイベント(カート)
-    document.getElementById('login-btn').addEventListener('click', function () {
-        cartModal.hide();
-        loginModal.show();
-    });
 
-    // ログインボタンクリックイベント(注文)
-    document.getElementById('login-out-btn').addEventListener('click', function () {
-        checkoutModal.hide();
-        loginModal.show();
-    });
-   
+
+
    
     
     // 商品一覧を取得して表示する関数
@@ -357,52 +340,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // 会員情報を自動入力する関数
-    async function autoFillMemberOrder() {
-        const form = document.getElementById('login-form');
-        
-        // フォームバリデーション
-        if (!form.checkValidity()) {
-            form.classList.add('was-validated');
-            return;
-        }
-        
-        const loginData = {
-                email: document.getElementById('email').value,
-                password: document.getElementById('password').value,
-        };
-        
-        try {
-            const response = await fetch(`${API_BASE}/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(loginData)
-            });
-            
-            if (!response.ok) {
-                throw new Error('ログインに失敗しました');
-            }
-            
-            const user = await response.json();
-            
-            // 注文フォームに会員情報を自動入力
-            document.getElementById('name').value = user.name || '';
-            document.getElementById('address').value = user.address || '';
-            document.getElementById('phone').value = user.phoneNumber || '';
-            document.getElementById('email').value = user.email || '';
-            document.getElementById('password').value = user.password || '';
-          
-            loginModal.hide();
-            checkoutModal.show();
-
-            form.classList.remove('was-validated');
-        } catch (error) {
-            console.error('Error:', error);
-            alert('会員情報の取得に失敗しました');
-        }
-    }
 
 
 

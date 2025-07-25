@@ -1,6 +1,7 @@
 package com.example.ryohin.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -40,6 +41,7 @@ public class Product {
     private Integer price;
 
     @Column(nullable = false)
+    @Min(0)
     private Integer stockQuantity;
 
     @Column(nullable = false)
